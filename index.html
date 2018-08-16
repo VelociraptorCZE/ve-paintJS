@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="utf-8"/>
+   <title>VE-paintJS</title>
+   <link rel = "stylesheet" href = "css/ve-runner.min.css">
+   <link rel = "stylesheet" href = "css/paint.css">
+</head>
+<body>
+  <div class = "rwp">
+    <canvas id = "paintCanvas" width = 1280 height = 720></canvas>
+  </div>
+  <div class = "rwp bg-blu">
+    <button id = "clear" class = "blu-but"><span class = "icon-file"></button>
+    <input type="color" id = "color" class = "blu-but">
+    <input type="color" id = "bg" class = "blu-but" value = "#ffffff">
+    <input type = "range" id = "size" min = "1" max = "50" value = "10">
+    <select id = "shape">
+      <option>circle</option>
+      <option>rectangle</option>
+    </select>
+    <input type = "text" id = "canvasSize" class = "txt-inp-blu anim" value = "1280*720" placeholder= "Canvas resolution">
+    <button id = "confirmSize" class = "blu-but"><span class = "icon-confirm"></button>
+  </div>
+  <script type="module">
+    import {Core} from './core/core.js';
+  </script>
+</body>
+</html>

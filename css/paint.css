@@ -1,0 +1,24 @@
+.blu-but{
+  width: 48px;
+  height: 48px;
+  padding-bottom: 20px;
+}
+
+input[type="color"].blu-but{
+  height: 46px;
+  padding: 0;
+}
+
+.txt-inp-blu::placeholder, .txt-inp-blu{
+  color: #ccc;
+}
+
+.rwp{
+  justify-content: center;
+  overflow-x: hidden;
+}
+
+.rwp:nth-child(2){
+  border-top: 2px solid #a1a1a1;
+  justify-content: flex-start;
+}
