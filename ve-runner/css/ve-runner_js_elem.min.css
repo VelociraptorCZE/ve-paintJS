@@ -1,0 +1,8 @@
+/*
+VE-RUNNER.CSS v1.2.2
+Copyright (C) Simon Raichl 2018
+MIT Licence
+Use this as you want, share it as you want, do basically whatever you want with this :)
+*/
+
+.clp-box-h{padding:2%;font-size:1.5em;font-weight:700}.alr-win{margin:0;z-index:1;background-color:#ffb31a;padding:20px;transition:.7s}.alr-win:hover{filter:brightness(90%)}.alr-win-ext{float:right}.tot-par>.tot-cnt{transform:scale(0);background:#ffb31a;opacity:0;position:absolute;padding:10px;z-index:101;margin-top:50px;box-sizing:content-box}.tot-cnt::after{position:absolute;content:"";border:12px solid transparent;border-bottom:16px solid #ffb31a;top:-25px;left:5%}.tot-par:hover .tot-cnt{transform:scale(1);opacity:1}.bg-red.tot-cnt::after{border-bottom-color:#cc001f}.bg-dar.tot-cnt::after{border-bottom-color:#1a1a1a}.bg-blu.tot-cnt::after{border-bottom-color:#0074cc}.bg-gre.tot-cnt::after{border-bottom-color:#00b347}#ovr-win{opacity:0;margin-top:-100vh;min-width:100vw;min-height:100vh;background:rgba(0,0,0,.78);position:fixed;z-index:1000;transition:0}#ovr-win-frm{position:absolute;background:#fff;width:80%;min-height:10vh;left:50%;top:50%;transform:translate(-50%,-50%)}.drp{display:inline-block}.drp ul{position:absolute;margin-top:12px;margin-left:-70px}.drp ul li{padding:12px 32px;display:none;list-style-type:none}.drp ul li a{padding:inherit;background:#ddd;color:#000;text-decoration:none}.drp ul li a:hover{background:#aaa}.slideshow{background:#1a1a1a;line-height:0}.slideshow>.item{display:none}.bar,.dot,.l,.r{position:absolute}.bar{background:rgba(0,0,0,.5);color:#fff;padding:20px}.item-vis{display:block!important;animation:img-fade 2s forwards}@keyframes img-fade{0%{opacity:.3}100%{opacity:1}}

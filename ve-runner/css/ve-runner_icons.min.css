@@ -1,5 +1,5 @@
 /*
-VE-RUNNER.CSS v1.2.0
+VE-RUNNER.CSS v1.2.2
 Copyright (C) Simon Raichl 2018
 MIT Licence
 Use this as you want, share it as you want, do basically whatever you want with this :)
@@ -11,10 +11,18 @@ Use this as you want, share it as you want, do basically whatever you want with 
   color: #fff;
 }
 
-.icon-file::after{
-  content: "C";
+.icon-cross::after{
+  content: "c";
 }
 
-.icon-confirm::after{
-  content: "D";
+.icon-trash::after{
+  content: "n";
+}
+
+.icon-pencil::after{
+  content: "y";
+}
+
+.icon-floppy::after{
+  content: "J";
 }

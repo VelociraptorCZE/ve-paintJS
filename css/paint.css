@@ -1,24 +1,56 @@
-.blu-but{
-  width: 48px;
-  height: 48px;
-  padding-bottom: 20px;
+input[type="color"].blu-but{
+  padding: 0;
+  height: 41px;
+  width: 40px;
 }
 
-input[type="color"].blu-but{
-  height: 46px;
-  padding: 0;
+canvas{
+  border: 1px solid #aaa
+}
+
+#ovr-win *{
+  font-weight: 200;
+  text-align: center;
+}
+
+h2{
+  font-size: 40px;
 }
 
 .txt-inp-blu::placeholder, .txt-inp-blu{
   color: #ccc;
 }
 
-.rwp{
-  justify-content: center;
-  overflow-x: hidden;
+.rwp:nth-child(2){
+  justify-content: flex-start;
+  max-height: 44px;
+  overflow: hidden;
 }
 
-.rwp:nth-child(2){
-  border-top: 2px solid #a1a1a1;
-  justify-content: flex-start;
+.rwp:nth-child(3){
+  justify-content: center;
+  overflow: hidden;
+}
+
+.ran{
+  margin-top: 30px;
+  z-index: 10;
+}
+
+.drp:not(li){
+  margin-top: 10px;
+  padding: 0;
+}
+
+.drp ul{
+  z-index: 100;
+  margin-top: 16px;
+}
+
+.drp ul li{
+  margin: -8px;
+}
+
+.drp .set li{
+  margin: -18px;
 }

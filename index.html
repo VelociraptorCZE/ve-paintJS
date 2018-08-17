@@ -3,25 +3,53 @@
 <head>
    <meta charset="utf-8"/>
    <title>VE-paintJS</title>
-   <link rel = "stylesheet" href = "css/ve-runner.min.css">
+   <link rel="shortcut icon" href="img/favicon.ico">
+   <link rel = "stylesheet" href = "ve-runner/css/ve-runner.min.css">
    <link rel = "stylesheet" href = "css/paint.css">
 </head>
 <body>
+  <div id = "ovr-win">
+    <div id = "ovr-win-frm" class = "bor-rad-tny">
+      <span id = "ovr-win-ext" class = "icon-cross clr-dar hov-blu pos-abs top-0 rgt-0 tra-500"></span>
+      <h2><img src = "img/paint.png" alt = "logo" width = 32 height = 32> VE-paintJS</h2>
+      <h3>v0.4.0</h3>
+      <p>A simple painting tool based on JS and HTML5 canvas.
+        <p><a href = "https://github.com/VelociraptorCZE/ve-paintJS" target="_blank" class = "dar-but pad-tny">GitHub</a></p>
+      </p>
+      <small>Copyright (C) Šimon Raichl 2018, MIT Licence</small>
+    </div>
+  </div>
+  <div class = "rwp bg-blu">
+    <div class = "drp">
+      <span class = "blu-but drp-tog">File</span>
+      <ul>
+        <li><a href = "#" id = "clear"><span class = "icon-trash clr-dar"></span> New</a></li>
+        <li><a href = "#" id = "download"><span class = "icon-floppy clr-dar"></span> Save</a></li>
+      </ul>
+    </div>
+    <div class = "drp">
+      <span class = "blu-but drp-tog">Settings</span>
+      <ul class = "set">
+        <li><a style = "padding-left: 48px">Blur <input type = "range" id = "blur" class = "ran" min = "0" max = "30" value = "0"></a></li>
+        <li><a style = "padding-left: 48px">Size <input type = "range" id = "size" class = "ran" min = "1" max = "50" value = "10"></a></li>
+        <li><a>Shape <input type = "range" id = "shape" class = "ran" min = "0" max = "1" value = "0"></a></li>
+      </ul>
+    </div>
+    <input type="color" id = "color" class = "blu-but">
+    <input type="color" id = "bg" class = "blu-but" value = "#ffffff">
+    <input type = "text" id = "canvasSize" class = "txt-inp-blu anim" value = "1280*720" placeholder= "Canvas resolution">
+    <button id = "confirmSize" class = "blu-but"><span class = "icon-pencil"></span></button>
+    <button id = "ovr-win-opn" class = "blu-but" style = "margin-left: auto">About</button>
+  </div>
   <div class = "rwp">
     <canvas id = "paintCanvas" width = 1280 height = 720></canvas>
   </div>
-  <div class = "rwp bg-blu">
-    <button id = "clear" class = "blu-but"><span class = "icon-file"></button>
-    <input type="color" id = "color" class = "blu-but">
-    <input type="color" id = "bg" class = "blu-but" value = "#ffffff">
-    <input type = "range" id = "size" min = "1" max = "50" value = "10">
-    <select id = "shape">
-      <option>circle</option>
-      <option>rectangle</option>
-    </select>
-    <input type = "text" id = "canvasSize" class = "txt-inp-blu anim" value = "1280*720" placeholder= "Canvas resolution">
-    <button id = "confirmSize" class = "blu-but"><span class = "icon-confirm"></button>
-  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src = "ve-runner/js/ve-runner.min.js"></script>
+  <script>
+    var c = document.getElementById("paintCanvas");
+    var cn = c.getContext("2d");
+  </script>
   <script type="module">
     import {Core} from './core/core.js';
   </script>
