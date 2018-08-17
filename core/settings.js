@@ -1,5 +1,5 @@
 /*
-VE-paintJS v0.4.0
+VE-paintJS v0.4.5
 Copyright (C) Simon Raichl 2018
 MIT Licence
 Use this as you want, share it as you want, do basically whatever you want with this :)
@@ -21,9 +21,26 @@ export class Settings extends Draw{
     this.ReturnBrush().blur = param;
     cn.filter = "blur(" + param + "px)";
   }
+  Deform(param = 20){
+    this.ReturnBrush().def = param/10;
+  }
+  Alpha(param = 100){
+    this.ReturnBrush().alpha = param/100;
+    cn.globalAlpha = param/100;
+  }
   Background(param = "#fff"){
     cn.fillStyle = param;
     cn.fillRect(0, 0, c.width, c.height);
+  }
+  LineMode(){
+    if (ln.getAttribute("data-enabled") == "true"){
+      ln.innerHTML = "Enable line mode";
+      ln.setAttribute("data-enabled", "false");
+    }
+    else{
+      ln.innerHTML = "Disable line mode";
+      ln.setAttribute("data-enabled", "true");
+    }
   }
   Download(param = "download"){
     let file = prompt("Type a file name: ", "painting");
@@ -71,8 +88,20 @@ const newShape = (param) =>{
   set.Shape(param);
 }
 
+const newDef = (param) =>{
+  set.Deform(param);
+}
+
+const newAlpha = (param) =>{
+  set.Alpha(param);
+}
+
 const clear = () =>{
   set.Clear();
+}
+
+const lineMode = () =>{
+  set.LineMode();
 }
 
 const download = (param) =>{
@@ -87,6 +116,8 @@ const canvasSize = () => {
 }
 
 set.Action("#download", download, "click", "");
+set.Action("#clear", clear, "click", "");
+set.Action("#lineMode", lineMode, "click", "");
 
 document.addEventListener("click", (e) => {
   set.Action("#color", newColor, "change");
@@ -94,7 +125,8 @@ document.addEventListener("click", (e) => {
   set.Action("#size", newSize, "change");
   set.Action("#shape", newShape, "change")
   set.Action("#blur", newBlur, "change");
-  set.Action("#clear", clear, "click", "");
+  set.Action("#deform", newDef, "change");
+  set.Action("#alpha", newAlpha, "change");
   if (e.target.id == "confirmSize" || e.target.className == "icon-pencil"){
     canvasSize();
   }

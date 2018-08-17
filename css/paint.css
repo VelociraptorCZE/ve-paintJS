@@ -5,7 +5,16 @@ input[type="color"].blu-but{
 }
 
 canvas{
-  border: 1px solid #aaa
+  border: 1px solid #aaa;
+}
+
+#canvasSize:not(:focus), #canvasSize::placeholder{
+  color: #0a426d;
+  border-color: #0a426d;
+}
+
+#canvasSize{
+  width: 172px;
 }
 
 #ovr-win *{
@@ -44,13 +53,17 @@ h2{
 
 .drp ul{
   z-index: 100;
-  margin-top: 16px;
+  margin-top: 13px;
 }
 
 .drp ul li{
   margin: -8px;
 }
 
-.drp .set li{
-  margin: -18px;
+.drp ul.set li{
+  margin-top: -18px;
+}
+
+.drp ul.draw{
+  margin-top: 20px;
 }
