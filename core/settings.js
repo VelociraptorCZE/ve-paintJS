@@ -1,5 +1,5 @@
 /*
-VE-paintJS v0.4.5
+VE-paintJS v0.5.2
 Copyright (C) Simon Raichl 2018
 MIT Licence
 Use this as you want, share it as you want, do basically whatever you want with this :)
@@ -10,6 +10,9 @@ import {Draw} from "./draw.js";
 export class Settings extends Draw{
   Color(param = "#000"){
     this.ReturnBrush().color = param;
+  }
+  Border(param = "#000"){
+    this.ReturnBrush().border = param;
   }
   Size(param = 10){
     this.ReturnBrush().size = param;
@@ -29,34 +32,43 @@ export class Settings extends Draw{
     cn.globalAlpha = param/100;
   }
   Background(param = "#fff"){
-    cn.fillStyle = param;
-    cn.fillRect(0, 0, c.width, c.height);
+    cnbg.fillStyle = param;
+    cnbg.fillRect(0, 0, c.width, c.height);
   }
-  LineMode(){
-    if (ln.getAttribute("data-enabled") == "true"){
-      ln.innerHTML = "Enable line mode";
-      ln.setAttribute("data-enabled", "false");
+  Mode(param){
+    let toggle = (str, bool, p) =>{
+      idList[p].innerHTML = str + " " + idName[p] + " mode";
+      modes[p] = bool;
+    }
+    if (modes[param]){
+      toggle("Enable", false, param);
     }
     else{
-      ln.innerHTML = "Disable line mode";
-      ln.setAttribute("data-enabled", "true");
+      toggle("Disable", true, param);
+    }
+    for (var i = 0; i < modes.length; i++) {
+      if (i != param) {
+        toggle("Enable", false, i);
+      }
     }
   }
   Download(param = "download"){
     let file = prompt("Type a file name: ", "painting");
     if (file !== null || file !== undefined || file != ""){
-      let e = document.getElementById(param);
-      e.href = c.toDataURL();
+      cnf.drawImage(c2, 0, 0);
+      cnf.drawImage(c, 0, 0);
+      let e = getId(param);
+      e.href = cf.toDataURL();
       e.download = file;
     }
   }
-  Action(name, func, listener, val){
+  Action(name, func, listener, val, val2, val3){
     let attr = document.querySelector(name);
     attr.addEventListener(listener, (e) => {
       if (val === undefined){
         val = e.target.value || attr.value;
       }
-      if (val == ""){
+      if (val === ""){
         func();
       }
       else{
@@ -64,12 +76,32 @@ export class Settings extends Draw{
       }
     });
   }
+  CanvasSize(){
+    let cs = getId("canvasSize");
+    let val = [];
+    if (cs.value == "auto"){
+      val.push(window.innerWidth);
+      val.push(window.innerHeight - 45);
+    }
+    else{
+      val = cs.value.split("*");
+    }
+    let c_list = [c, c2, c3, cf];
+    for (var i = 0; i < c_list.length; i++) {
+      c_list[i].setAttribute("width", val[0]);
+      c_list[i].setAttribute("height", val[1]);
+    }
+  }
 }
 
 const set = new Settings();
 
 const newColor = (param) =>{
   set.Color(param);
+}
+
+const newBorder = (param) =>{
+  set.Border(param);
 }
 
 const newBg = (param) =>{
@@ -100,8 +132,8 @@ const clear = () =>{
   set.Clear();
 }
 
-const lineMode = () =>{
-  set.LineMode();
+const newMode = (param) =>{
+  set.Mode(param);
 }
 
 const download = (param) =>{
@@ -109,18 +141,17 @@ const download = (param) =>{
 }
 
 const canvasSize = () => {
-  let cs = document.getElementById("canvasSize");
-  let val = cs.value.split("*");
-  c.setAttribute("width", val[0]);
-  c.setAttribute("height", val[1]);
+  set.CanvasSize();
 }
 
 set.Action("#download", download, "click", "");
 set.Action("#clear", clear, "click", "");
-set.Action("#lineMode", lineMode, "click", "");
+set.Action("#lineMode", newMode, "click", 0);
+set.Action("#rectMode", newMode, "click", 1);
 
 document.addEventListener("click", (e) => {
   set.Action("#color", newColor, "change");
+  set.Action("#bor-color", newBorder, "change");
   set.Action("#bg", newBg, "change");
   set.Action("#size", newSize, "change");
   set.Action("#shape", newShape, "change")

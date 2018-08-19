@@ -1,11 +1,26 @@
+body{
+  overflow-x: hidden;
+}
+
 input[type="color"].blu-but{
   padding: 0;
-  height: 41px;
-  width: 40px;
+  height: 24px;
+  width: 20px;
+  background: transparent;
 }
 
 canvas{
   border: 1px solid #aaa;
+  cursor: none;
+  position: absolute;
+}
+
+#finalCanvas{
+  opacity: 0;
+}
+
+#bgCanvas, #previewCanvas, #finalCanvas{
+  z-index: -1;
 }
 
 #canvasSize:not(:focus), #canvasSize::placeholder{
@@ -14,7 +29,7 @@ canvas{
 }
 
 #canvasSize{
-  width: 172px;
+  width: 173px;
 }
 
 #ovr-win *{
@@ -32,8 +47,7 @@ h2{
 
 .rwp:nth-child(2){
   justify-content: flex-start;
-  max-height: 44px;
-  overflow: hidden;
+  height: 43px;
 }
 
 .rwp:nth-child(3){
@@ -54,6 +68,10 @@ h2{
 .drp ul{
   z-index: 100;
   margin-top: 13px;
+  transition: 0.2s ease-in-out;
+  transform: translateY(-100px);
+  opacity: 0;
+  z-index: -100;
 }
 
 .drp ul li{
@@ -66,4 +84,14 @@ h2{
 
 .drp ul.draw{
   margin-top: 20px;
+}
+
+.drp-vis{
+  display: block !important;
+}
+
+.drp-vis-ul{
+  transform: translateY(0) !important;
+  opacity: 1 !important;
+  z-index: 10 !important;
 }
