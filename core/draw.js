@@ -145,7 +145,7 @@ export class DrawSupport extends Draw{
     if (thisBrush.shape == 0){
       param.arc(x, y, thisBrush.size, 0, Math.PI * thisBrush.def);
     }
-    if (thisBrush.shape == 1 && (!active || eraser)){
+    if (thisBrush.shape == 1 && (!active || eraser || !thisBrush.continuous)){
         param.fillRect(x, y, thisBrush.size * 2, thisBrush.size * 2);
     }
     param.closePath();
