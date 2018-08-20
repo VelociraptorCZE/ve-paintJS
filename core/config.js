@@ -1,5 +1,5 @@
 /*
-VE-paintJS v0.5.2
+VE-paintJS v0.5.6
 Copyright (C) Simon Raichl 2018
 MIT Licence
 Use this as you want, share it as you want, do basically whatever you want with this :)
@@ -21,13 +21,18 @@ const cn = c2d(c);
 const cnbg = c2d(c2);
 const cnp = c2d(c3);
 const cnf = c2d(cf);
-cnp.globalAlpha = 0.4;
+cnp.globalAlpha = 0.6;
 const lnid = getId("lineMode");
 const rectid = getId("rectMode");
+const eraserid = getId("eraser");
+const newtextid = getId("newText");
+const setfontid = getId("setFont");
+const cont = getId("continuous");
 
 const modes = [false, false];
 const idList = [lnid, rectid];
 const idName = ["line", "rect"];
+var eraser = false;
 
 // I just wanted to get rid of the jQuery dependency
 
@@ -73,11 +78,19 @@ class DOMTools{
       drp[i].addEventListener("click", dom.togDrp);
     }
   }
+  start(){
+    c3.style = "z-index: -1";
+  }
+  stop(){
+    c3.removeAttribute("style");
+  }
 }
 
 var dom = new DOMTools();
 
 ovr_o.addEventListener("mouseup", dom.opnOvr);
 ovr_e.addEventListener("mouseup", dom.extOvr);
+c3.addEventListener("mousedown", dom.start);
+c.addEventListener("mouseup", dom.stop);
 
 dom.allDrp(document.getElementsByClassName("drp-tog"));

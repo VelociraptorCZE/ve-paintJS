@@ -1,5 +1,5 @@
 /*
-VE-paintJS v0.5.2
+VE-paintJS v0.5.6
 Copyright (C) Simon Raichl 2018
 MIT Licence
 Use this as you want, share it as you want, do basically whatever you want with this :)
@@ -11,14 +11,34 @@ export class Settings extends Draw{
   Color(param = "#000"){
     this.ReturnBrush().color = param;
   }
-  Border(param = "#000"){
-    this.ReturnBrush().border = param;
+  Fill(param = "#000"){
+    this.ReturnBrush().fill = param;
   }
   Size(param = 10){
     this.ReturnBrush().size = param;
   }
   Shape(param = 0){
     this.ReturnBrush().shape = param;
+  }
+  NewText(){
+    this.ReturnText().enabled = true;
+    this.ReturnText().text = prompt("Type a text", "Some text");
+  }
+  NewFont(){
+    this.ReturnText().font = prompt("Set your font with two parameters, size and font family", "30px Segoe UI");
+  }
+  Continuous(){
+    this.ReturnBrush().continuous = cont.checked;
+  }
+  Eraser(){
+    if (eraser){
+      eraser = false;
+      eraserid.innerHTML = "Enable eraser";
+    }
+    else{
+      eraser = true;
+      eraserid.innerHTML = "Disable eraser";
+    }
   }
   Blur(param = 0){
     this.ReturnBrush().blur = param;
@@ -53,16 +73,17 @@ export class Settings extends Draw{
     }
   }
   Download(param = "download"){
+    let e = getId(param);
     let file = prompt("Type a file name: ", "painting");
-    if (file !== null || file !== undefined || file != ""){
-      cnf.drawImage(c2, 0, 0);
-      cnf.drawImage(c, 0, 0);
-      let e = getId(param);
-      e.href = cf.toDataURL();
-      e.download = file;
+    if (file === null){
+      return;
     }
+    cnf.drawImage(c2, 0, 0);
+    cnf.drawImage(c, 0, 0);
+    e.href = cf.toDataURL();
+    e.download = file;
   }
-  Action(name, func, listener, val, val2, val3){
+  Action(name, func, listener, val){
     let attr = document.querySelector(name);
     attr.addEventListener(listener, (e) => {
       if (val === undefined){
@@ -79,7 +100,7 @@ export class Settings extends Draw{
   CanvasSize(){
     let cs = getId("canvasSize");
     let val = [];
-    if (cs.value == "auto"){
+    if (cs.value.toLowerCase() == "auto"){
       val.push(window.innerWidth);
       val.push(window.innerHeight - 45);
     }
@@ -100,8 +121,8 @@ const newColor = (param) =>{
   set.Color(param);
 }
 
-const newBorder = (param) =>{
-  set.Border(param);
+const newFill = (param) =>{
+  set.Fill(param);
 }
 
 const newBg = (param) =>{
@@ -120,6 +141,10 @@ const newShape = (param) =>{
   set.Shape(param);
 }
 
+const continuous = () =>{
+  set.Continuous();
+}
+
 const newDef = (param) =>{
   set.Deform(param);
 }
@@ -128,8 +153,20 @@ const newAlpha = (param) =>{
   set.Alpha(param);
 }
 
+const newText = () =>{
+  set.NewText();
+}
+
+const newFont = () =>{
+  set.NewFont();
+}
+
 const clear = () =>{
   set.Clear();
+}
+
+const erase = () =>{
+  set.Eraser();
 }
 
 const newMode = (param) =>{
@@ -148,10 +185,15 @@ set.Action("#download", download, "click", "");
 set.Action("#clear", clear, "click", "");
 set.Action("#lineMode", newMode, "click", 0);
 set.Action("#rectMode", newMode, "click", 1);
+set.Action("#tra-fill", newFill, "click", "transparent");
+set.Action("#eraser", erase, "click", "");
+set.Action("#newText", newText, "click", "");
+set.Action("#setFont", newFont, "click", "");
+set.Action("#continuous", continuous, "change");
 
 document.addEventListener("click", (e) => {
   set.Action("#color", newColor, "change");
-  set.Action("#bor-color", newBorder, "change");
+  set.Action("#fill", newFill, "change");
   set.Action("#bg", newBg, "change");
   set.Action("#size", newSize, "change");
   set.Action("#shape", newShape, "change")

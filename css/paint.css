@@ -9,6 +9,10 @@ input[type="color"].blu-but{
   background: transparent;
 }
 
+span.blu-but{
+  padding: 8px 6px;
+}
+
 canvas{
   border: 1px solid #aaa;
   cursor: none;
@@ -19,7 +23,7 @@ canvas{
   opacity: 0;
 }
 
-#bgCanvas, #previewCanvas, #finalCanvas{
+#bgCanvas, #finalCanvas{
   z-index: -1;
 }
 
@@ -47,7 +51,7 @@ h2{
 
 .rwp:nth-child(2){
   justify-content: flex-start;
-  height: 43px;
+  height: 41px;
 }
 
 .rwp:nth-child(3){
@@ -60,6 +64,10 @@ h2{
   z-index: 10;
 }
 
+.drp label{
+  cursor: pointer;
+}
+
 .drp:not(li){
   margin-top: 10px;
   padding: 0;
@@ -67,7 +75,7 @@ h2{
 
 .drp ul{
   z-index: 100;
-  margin-top: 13px;
+  margin-top: 12px;
   transition: 0.2s ease-in-out;
   transform: translateY(-100px);
   opacity: 0;
@@ -78,12 +86,16 @@ h2{
   margin: -8px;
 }
 
+.drp .set li:nth-child(7){
+  margin-top: -10px;
+}
+
 .drp ul.set li{
   margin-top: -18px;
 }
 
 .drp ul.draw{
-  margin-top: 20px;
+  margin-top: 18px;
 }
 
 .drp-vis{
