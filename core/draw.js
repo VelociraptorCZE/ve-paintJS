@@ -1,5 +1,5 @@
 /*
-VE-paintJS v0.5.6
+VE-paintJS v0.6.0
 Copyright (C) Simon Raichl 2018
 MIT Licence
 Use this as you want, share it as you want, do basically whatever you want with this :)
@@ -8,11 +8,12 @@ Use this as you want, share it as you want, do basically whatever you want with 
 let active, isMobile;
 
 let Brush = class{
-  constructor(size = 10, color = "#000", fill = "#000", shape = 0, filter = 0, def = 2, alpha = 1, continuous = true) {
+  constructor(size = 10, color = "#000", fill = "#000", bg = "transparent", shape = 0, filter = 0, def = 2, alpha = 1, continuous = true) {
     this.size = size;
     this.color = color;
     this.fill = fill;
     this.shape = shape;
+    this.bg = bg;
     this.filter = filter;
     this.def = def;
     this.alpha = alpha;
@@ -44,10 +45,10 @@ var line = new Line();
 var text = new NewText();
 
 export class Draw{
-  ReturnBrush(){
+  _Brush(){
     return thisBrush;
   }
-  ReturnText(){
+  Text(){
     return text;
   }
   Init(id){
@@ -59,6 +60,11 @@ export class Draw{
     c3.onmousedown = () => {
       active = true;
     }
+    c.onmouseup = () => {
+      steps++;
+      backups[steps] = new Image();
+      backups[steps].src = c.toDataURL("image/png");
+    }
     window.onmouseup = () => {
       active = false;
       if (!modes[0] && !modes[1]){
@@ -69,8 +75,8 @@ export class Draw{
   }
   DrawText(e){
     if (text.enabled){
-      text.x = e.clientX;
-      text.y = e.clientY;
+      text.x = e.offsetX;
+      text.y = e.offsetY;
       draw.DrawNewText();
       text.enabled = false;
       text.text = undefined;
@@ -111,8 +117,7 @@ export class Draw{
       draw.DrawNewRect(cnp, e.clientX, e.clientY);
     }
     else if (text.enabled){
-      draw.DrawNewText(cnp, e.clientX, e.clientY);
-
+      draw.DrawNewText(cnp, e.offsetX, e.offsetY);
     }
     draw.DrawController(cnp, e);
     if ((active || isMobile) && !modes[0] && !modes[1]){
@@ -128,8 +133,13 @@ export class Draw{
   Render(){
     window.requestAnimationFrame(this.Draw);
   }
-  Clear(){
+  Clear(backup = false){
     cn.clearRect(0, 0, c.width, c.height);
+    if (!backup){
+      cnbg.clearRect(0, 0, c.width, c.height);
+      backups = [];
+      steps = 0;
+    }
   }
 }
 
@@ -163,21 +173,26 @@ export class DrawSupport extends Draw{
   }
   DrawNewRect(can = cn, x2 = line.x2, y2 = line.y2){
     can.beginPath();
-    let sz = thisBrush.size;
-    can.rect(line.x1-sz, line.y1-sz, x2+sz*2, y2+sz*2);
-    can.fillStyle = thisBrush.color;
-    can.fill();
-    can.closePath();
+    can.lineWidth = thisBrush.size;
+    can.strokeStyle = thisBrush.color;
     can.beginPath();
     can.rect(line.x1, line.y1, x2, y2);
     can.fillStyle = thisBrush.fill;
     can.fill();
+    if (!nobor){
+      can.stroke();
+    }
     can.closePath();
   }
   DrawNewText(can = cn, x = text.x, y = text.y){
     can.font = text.font;
-    can.fillStyle = thisBrush.color;
+    can.lineWidth = thisBrush.size/10;
+    can.strokeStyle = thisBrush.color;
+    can.fillStyle = thisBrush.fill;
     can.fillText(text.text, x, y);
+    if (!nobor){
+      can.strokeText(text.text, x, y);
+    }
   }
   Erase(param, e){
     cn.globalCompositeOperation = "destination-out";

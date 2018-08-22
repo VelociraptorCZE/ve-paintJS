@@ -1,5 +1,5 @@
 /*
-VE-paintJS v0.5.6
+VE-paintJS v0.6.0
 Copyright (C) Simon Raichl 2018
 MIT Licence
 Use this as you want, share it as you want, do basically whatever you want with this :)
@@ -25,14 +25,19 @@ cnp.globalAlpha = 0.6;
 const lnid = getId("lineMode");
 const rectid = getId("rectMode");
 const eraserid = getId("eraser");
-const newtextid = getId("newText");
-const setfontid = getId("setFont");
 const cont = getId("continuous");
+const noborid = getId("no-bor");
+const setbgimgid = getId("setBgImg");
+const loadimgid = getId("loadImg");
 
 const modes = [false, false];
 const idList = [lnid, rectid];
 const idName = ["line", "rect"];
 var eraser = false;
+var nobor = false;
+
+var backups = [];
+var steps = 0;
 
 // I just wanted to get rid of the jQuery dependency
 

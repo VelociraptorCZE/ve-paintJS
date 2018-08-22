@@ -26,3 +26,7 @@ Use this as you want, share it as you want, do basically whatever you want with 
 .icon-floppy::after{
   content: "J";
 }
+
+.icon-folder::after{
+  content: "K";
+}

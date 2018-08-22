@@ -19,6 +19,16 @@ canvas{
   position: absolute;
 }
 
+#undo::after{
+  content: "Undo";
+  padding-right: 37px;
+}
+
+#redo::after{
+  content: "Redo";
+  padding-right: 40px;
+}
+
 #finalCanvas{
   opacity: 0;
 }
@@ -52,6 +62,7 @@ h2{
 .rwp:nth-child(2){
   justify-content: flex-start;
   height: 41px;
+  overflow-y: hidden;
 }
 
 .rwp:nth-child(3){
@@ -86,12 +97,16 @@ h2{
   margin: -8px;
 }
 
-.drp .set li:nth-child(7){
-  margin-top: -10px;
+.drp ul.set{
+  background: #ddd;
 }
 
 .drp ul.set li{
   margin-top: -18px;
+}
+
+.drp .draw li:nth-child(3), .drp .bg li:nth-child(3){
+  margin-top: -20px;
 }
 
 .drp ul.draw{
