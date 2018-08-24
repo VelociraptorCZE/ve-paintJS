@@ -1,5 +1,5 @@
 /*
-VE-paintJS v0.6.0
+VE-paintJS v0.6.3
 Copyright (C) Simon Raichl 2018
 MIT Licence
 Use this as you want, share it as you want, do basically whatever you want with this :)
@@ -8,17 +8,30 @@ Use this as you want, share it as you want, do basically whatever you want with 
 import {Draw} from "./draw.js";
 
 export class Settings extends Draw{
-  Color(param = "#000"){
-    this._Brush().color = param;
+  Color(){
+    this._Brush().color = getId("color").value;
   }
-  Fill(param = "#000"){
-    this._Brush().fill = param;
+  ResFill(param){
+    if (param == 0) {
+      this._Brush().fill = "transparent";
+    }
+    else{
+      this._Brush().fill1 = "transparent";
+    }
   }
-  Size(param = 10){
-    this._Brush().size = param;
+  Fill(param){
+    if (param == 0) {
+      this._Brush().fill = getId("fill").value;
+    }
+    else{
+      this._Brush().fill1 = getId("fill1").value;
+    }
+  }
+  Size(){
+    this._Brush().size = getId("size").value;
   }
   Shape(param = 0){
-    this._Brush().shape = param;
+    this._Brush().shape = getId("shape").value;
   }
   NewText(){
     this.Text().enabled = true;
@@ -59,27 +72,30 @@ export class Settings extends Draw{
   Eraser(){
     eraser = eraserid.checked;
   }
-  NoBorder(){
-    nobor = noborid.checked;
+  BgStretch(){
+    this.Bg().stretch = bgstretchid.checked;
   }
-  Blur(param = 0){
+  Blur(){
+    let param = getId("blur").value;
     this._Brush().blur = param;
     cn.filter = "blur(" + param + "px)";
   }
-  Deform(param = 20){
-    this._Brush().def = param/10;
+  Deform(){
+    this._Brush().def = getId("deform").value/10;
   }
-  Alpha(param = 100){
-    this._Brush().alpha = param/100;
-    cn.globalAlpha = param/100;
+  Alpha(param){
+    param = getId("alpha").value/100;
+    this._Brush().alpha = param;
+    cn.globalAlpha = param;
   }
-  BgAlpha(param = 100){
-    cnbg.globalAlpha = param/100;
-    this._Brush().bg = param/100;
+  BgAlpha(){
+    let param = getId("bgAlpha").value/100;
+    cnbg.globalAlpha = param;
+    this.Bg().alpha = param;
   }
   Background(param){
     param = getId("bg").value;
-    cnbg.globalAlpha = this._Brush().bg;
+    cnbg.globalAlpha = this.Bg().alpha;
     cnbg.fillStyle = param;
     cnbg.fillRect(0, 0, c.width, c.height);
   }
@@ -105,7 +121,12 @@ export class Settings extends Draw{
           let val = img.width + "," + img.height;
           this.CanvasSize(val);
         }
-        cnbg.drawImage(img, 0, 0);
+        if (this.Bg().stretch){
+          cnbg.drawImage(img, 0, 0, c.width, c.height);
+        }
+        else{
+          cnbg.drawImage(img, 0, 0);
+        }
       }
     }
     try {
@@ -161,7 +182,7 @@ export class Settings extends Draw{
     if (vals === undefined){
       if (cs.value.toLowerCase() == "auto"){
         val.push(window.innerWidth);
-        val.push(window.innerHeight - 43);
+        val.push(window.innerHeight - getId("menu").offsetHeight - 2);
       }
       else{
         val = cs.value.split("*");
@@ -184,44 +205,44 @@ const download = (param) =>{
   set.Download(param);
 }
 
-const newColor = (param) =>{
-  set.Color(param);
+const newColor = () =>{
+  set.Color();
 }
 
 const newFill = (param) =>{
   set.Fill(param);
 }
 
-const newBg = (param) =>{
-  set.Background(param);
+const newBg = () =>{
+  set.Background();
 }
 
-const newSize = (param) =>{
-  set.Size(param);
+const newSize = () =>{
+  set.Size();
 }
 
-const newBlur = (param) =>{
-  set.Blur(param);
+const newBlur = () =>{
+  set.Blur();
 }
 
-const newShape = (param) =>{
-  set.Shape(param);
+const newShape = () =>{
+  set.Shape();
 }
 
 const continuous = () =>{
   set.Continuous();
 }
 
-const newDef = (param) =>{
-  set.Deform(param);
+const newDef = () =>{
+  set.Deform();
 }
 
-const newAlpha = (param) =>{
-  set.Alpha(param);
+const newAlpha = () =>{
+  set.Alpha();
 }
 
-const newBgAlpha = (param) =>{
-  set.BgAlpha(param);
+const newBgAlpha = () =>{
+  set.BgAlpha();
 }
 
 const newText = () =>{
@@ -240,10 +261,6 @@ const erase = () =>{
   set.Eraser();
 }
 
-const setNoBor = () =>{
-  set.NoBorder();
-}
-
 const undo = () =>{
   set.Undo();
 }
@@ -260,6 +277,10 @@ const setBgImg = () =>{
   set.BackgroundImage();
 }
 
+const bgStretch = () =>{
+  set.BgStretch();
+}
+
 const loadImg = () =>{
   set.BackgroundImage(true);
 }
@@ -268,15 +289,16 @@ const newMode = (param) =>{
   set.Mode(param);
 }
 
-const canvasSize = () => {
-  set.CanvasSize();
+const resFill = (param) =>{
+  set.ResFill(param);
 }
 
 set.Action("#download", download, "click", "");
 set.Action("#clear", clear, "click", "");
 set.Action("#lineMode", newMode, "click", 0);
 set.Action("#rectMode", newMode, "click", 1);
-set.Action("#tra-fill", newFill, "click", "transparent");
+set.Action("#tra-fill", resFill, "click", 0);
+set.Action("#tra-fill1", resFill, "click", 1);
 set.Action("#newText", newText, "click", "");
 set.Action("#setFont", newFont, "click", "");
 set.Action("#undo", undo, "click", "");
@@ -284,21 +306,31 @@ set.Action("#redo", redo, "click", "");
 set.Action("#returnTo", returnTo, "click", "");
 set.Action("#continuous", continuous, "change");
 set.Action("#eraser", erase, "change");
-set.Action("#no-bor", setNoBor, "change");
+set.Action("#bgstretch", bgStretch, "change");
 set.Action("#bg", newBg, "change");
 set.Action("#setBgImg", setBgImg, "change");
 set.Action("#loadImg", loadImg, "change");
+set.Action("#fill", newFill, "change", 0);
+set.Action("#fill1", newFill, "change", 1);
+set.Action("#blur", newBlur, "change");
+set.Action("#deform", newDef, "change");
+set.Action("#alpha", newAlpha, "change");
+set.Action("#size", newSize, "change");
+set.Action("#color", newColor, "change");
+set.Action("#shape", newShape, "change")
+set.Action("#bgAlpha", newBgAlpha, "change");
 
 document.addEventListener("click", (e) => {
-  set.Action("#color", newColor, "change");
-  set.Action("#fill", newFill, "change");
-  set.Action("#size", newSize, "change");
-  set.Action("#shape", newShape, "change")
-  set.Action("#blur", newBlur, "change");
-  set.Action("#deform", newDef, "change");
-  set.Action("#alpha", newAlpha, "change");
-  set.Action("#bgAlpha", newBgAlpha, "change");
   if (e.target.id == "confirmSize" || e.target.className == "icon-pencil"){
-    canvasSize();
+    set.CanvasSize();
   }
 });
+
+document.onkeyup = (e) =>{
+  if (e.ctrlKey && e.keyCode == 90) {
+    set.Undo();
+  }
+  if (e.ctrlKey && e.keyCode == 89) {
+    set.Redo();
+  }
+}

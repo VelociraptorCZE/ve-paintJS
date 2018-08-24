@@ -9,6 +9,14 @@ input[type="color"].blu-but{
   background: transparent;
 }
 
+input ~ img{
+  border: 2px solid transparent;
+}
+
+input:checked ~ img{
+  border: 2px solid #a6d0f0;
+}
+
 span.blu-but{
   padding: 8px 6px;
 }
@@ -61,8 +69,11 @@ h2{
 
 .rwp:nth-child(2){
   justify-content: flex-start;
-  height: 41px;
   overflow-y: hidden;
+}
+
+.sub-menu label{
+  margin-left: 8px;
 }
 
 .rwp:nth-child(3){
@@ -97,15 +108,11 @@ h2{
   margin: -8px;
 }
 
-.drp ul.set{
-  background: #ddd;
-}
-
 .drp ul.set li{
   margin-top: -18px;
 }
 
-.drp .draw li:nth-child(3), .drp .bg li:nth-child(3){
+.drp, .drp .bg li:nth-child(4), .drp .bg li:nth-child(5){
   margin-top: -20px;
 }
 

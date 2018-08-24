@@ -1,5 +1,5 @@
 /*
-VE-paintJS v0.6.0
+VE-paintJS v0.6.3
 Copyright (C) Simon Raichl 2018
 MIT Licence
 Use this as you want, share it as you want, do basically whatever you want with this :)

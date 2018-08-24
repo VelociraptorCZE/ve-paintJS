@@ -1,5 +1,5 @@
 /*
-VE-paintJS v0.6.0
+VE-paintJS v0.6.3
 Copyright (C) Simon Raichl 2018
 MIT Licence
 Use this as you want, share it as you want, do basically whatever you want with this :)
@@ -26,16 +26,16 @@ const lnid = getId("lineMode");
 const rectid = getId("rectMode");
 const eraserid = getId("eraser");
 const cont = getId("continuous");
-const noborid = getId("no-bor");
 const setbgimgid = getId("setBgImg");
 const loadimgid = getId("loadImg");
+const bgstretchid = getId("bgstretch");
 
 const modes = [false, false];
 const idList = [lnid, rectid];
 const idName = ["line", "rect"];
-var eraser = false;
-var nobor = false;
 
+var fillType = 0;
+var eraser = false;
 var backups = [];
 var steps = 0;
 

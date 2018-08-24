@@ -5,25 +5,23 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
    <title>VE-paintJS</title>
    <link rel="shortcut icon" href="img/favicon.ico">
-   <link rel = "stylesheet" href = "ve-runner/css/ve-runner.min.css">
-   <link rel = "stylesheet" href = "css/paint.css">
 </head>
 <body>
   <div id = "ovr-win">
     <div id = "ovr-win-frm" class = "bor-rad-tny">
       <span id = "ovr-win-ext" class = "icon-cross clr-dar hov-blu pos-abs top-0 rgt-0 tra-500"></span>
       <h2><img src = "img/paint.png" alt = "logo" width = 32 height = 32> VE-paintJS</h2>
-      <h3>v0.6.0</h3>
+      <h3>v0.6.3</h3>
       <p>A simple painting tool based on JS and HTML5 canvas.</p>
         <p><a href = "https://github.com/VelociraptorCZE/ve-paintJS" target="_blank" class = "dar-but pad-tny">GitHub</a></p>
       <small>Copyright (C) Šimon Raichl 2018, MIT Licence</small>
     </div>
   </div>
-  <div class = "rwp bg-blu">
+  <div class = "rwp bg-blu" id = "menu">
     <div class = "drp">
       <span class = "blu-but drp-tog">File</span>
       <ul>
-        <li><label style = "padding-right: 35px" id = "clear"><span class = "icon-trash clr-dar"></span> New</a></li>
+        <li><label style = "padding-right: 35px" id = "clear"><span class = "icon-trash clr-dar"></span> New</label></li>
         <li><a style = "padding-right: 34px" href = "#" id = "download"><span class = "icon-floppy clr-dar"></span> Save</a></li>
         <li><label><span class = "icon-folder clr-dar"></span> Load<input type = "file" id = "loadImg" style = "display:none"></label></li>
       </ul>
@@ -40,29 +38,23 @@
       <span class = "blu-but drp-tog">Settings</span>
       <ul class = "set">
         <li><label style = "padding-left: 94px">Blur <input type = "range" id = "blur" class = "ran" min = "0" max = "30" value = "0"></label></li>
-        <li><label style = "padding-left: 94px">Size <input type = "range" id = "size" class = "ran" min = "1" max = "50" value = "10"></label></li>
+        <li><label style = "padding-left: 93px">Size <input type = "range" id = "size" class = "ran" min = "0" max = "50" value = "10"></label></li>
         <li><label style = "padding-left: 78px">Shape <input type = "range" id = "shape" class = "ran" min = "0" max = "1" value = "0"></label></li>
         <li><label style = "padding-left: 81px">Alpha <input type = "range" id = "alpha" class = "ran" min = "1" max = "100" value = "100"></label></li>
         <li><label style = "padding-left: 33px">Deformation <input style = "transform:rotate(0.5turn)" type = "range" id = "deform" class = "ran" min = "1" max = "20" value = "20"></label></li>
-        <li><label style = "padding-left: 30px" class="chk-lst">Continuous free line<input type="checkbox" id = "continuous" checked><span class="chk tra-500" style = "margin-left: 8px"></span></label></li>
-        <li><label style = "padding-right:48px;" class="chk-lst">No border<input type="checkbox" id = "no-bor"><span class="chk tra-500" style = "margin-left: 8px"></span></label>
         <li><label><input style = "margin-top: -55px" type = "text" id = "canvasSize" class = "txt-inp-blu anim" value = "1280*720" placeholder= "Resolution"><span id = "confirmSize" class = "blu-but pad-tny"><span class = "icon-pencil"></span></span></label></li>
       </ul>
     </div>
     <div class = "drp">
       <span class = "blu-but drp-tog">Draw</span>
       <ul class = "draw">
-        <li><label style = "padding-right: 70px" id = "lineMode">Enable line mode</label></li>
-        <li><label style = "padding-right: 68px" id = "rectMode">Enable rect mode</label></li>
-        <li><label style = "padding-right: 86px" class="chk-lst">Eraser<input type="checkbox" id = "eraser"><span class="chk tra-500" style = "margin-left: 8px"></span></label>
-      </ul>
-    </div>
-    <div class = "drp">
-      <span class = "blu-but drp-tog">Brush</span>
-      <ul>
-        <li><label>Brush color <input type="color" id = "color" class = "blu-but"></label></li>
-        <li><label style = "padding-right: 52px">Fill color <input type="color" id = "fill" class = "blu-but"></label></li>
-        <li><label style = "padding-right: 32px" id = "tra-fill">Transparent fill</label></li>
+        <li><label style = "padding-right: 34px" id = "lineMode">Enable line mode</label></li>
+        <li><label id = "rectMode">Enable rect mode</label></li>
+        <li><label style = "padding-right: 51px">Brush color <input type="color" id = "color" class = "blu-but"></label></li>
+        <li><label style = "padding-right: 72px">Fill color <input type="color" id = "fill" class = "blu-but"></label></li>
+        <li><label style = "padding-right: 46px">2<sup>nd</sup> fill color <input type="color" id = "fill1" class = "blu-but"></label></li>
+        <li><label style = "padding-right: 52px" id = "tra-fill">Transparent fill</label></li>
+        <li><label style = "padding-right: 25px" id = "tra-fill1">2<sup>nd</sup> transparent fill</label></li>
       </ul>
     </div>
     <div class = "drp">
@@ -70,7 +62,9 @@
       <ul class = "bg">
         <li><label style = "padding-right: 42px">Background color <input type="color" id = "bg" class = "blu-but" value = "#ffffff"></label></li>
         <li><label>Set background image<input type = "file" id = "setBgImg" style = "display:none"></label></li>
+        <li><label onclick = "cnbg.clearRect(0,0,c.width,c.height)" style = "padding-right: 66px">Clear background</label></li>
         <li><label style = "padding: 10px 12px 10px 33px">Alpha <input type = "range" id = "bgAlpha" class = "ran" min = "1" max = "100" value = "100"></label></li>
+        <li><label class="chk-lst">Stretch<input type="checkbox" id = "bgstretch"><span class="chk tra-500" style = "margin-left: 8px"></span></label></li>
       </ul>
     </div>
     <div class = "drp">
@@ -81,6 +75,16 @@
       </ul>
     </div>
     <div id = "ovr-win-opn" style = "margin-left:auto" class = "blu-but">About</div>
+    <div class = "rwp-crd-100">
+      <div class = "rwp sub-menu clr-whi">
+        <label>Tools:</label>
+        <label class="chk-lst"><img src = "img/continuous.png" alt = "continuous"><input type="checkbox" id = "continuous" checked><span class="chk tra-500"></span></label>
+        <label class="chk-lst"><img src = "img/eraser.png" alt = "eraser"><input type="checkbox" id = "eraser"><span class="chk tra-500"></span></label>
+        <label>| Fill style:</label>
+        <label class="rad-lst"><input type="radio" onclick="fillType=0" name="fill" checked><img src = "img/solid.png" alt = "solid" class="tra-500"></label>
+        <label class="rad-lst"><input type="radio" onclick="fillType=1" name="fill"><img src = "img/gradient.png" alt = "gradient" class="tra-500"></label>
+      </div>
+    </div>
   </div>
   <div class = "rwp">
     <canvas id = "finalCanvas" width = 1280 height = 720></canvas>
@@ -88,6 +92,8 @@
     <canvas id = "paintCanvas" width = 1280 height = 720></canvas>
     <canvas id = "previewCanvas" width = 1280 height = 720></canvas>
   </div>
+  <link rel = "stylesheet" href = "ve-runner/css/ve-runner.min.css">
+  <link rel = "stylesheet" href = "css/paint.css">
   <script src = "core/config.js"></script>
   <script type="module">
     import {Core} from './core/core.js';
