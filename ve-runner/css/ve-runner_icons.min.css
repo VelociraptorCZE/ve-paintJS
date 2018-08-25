@@ -30,3 +30,7 @@ Use this as you want, share it as you want, do basically whatever you want with 
 .icon-folder::after{
   content: "K";
 }
+
+.icon-eye::after{
+  content: "L";
+}

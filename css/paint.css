@@ -27,6 +27,43 @@ canvas{
   position: absolute;
 }
 
+.invisible, .invisible *{
+  opacity: 0 !important;
+  transform: scale(0);
+}
+
+.striked::after{
+  content: "";
+  transform: rotate(-55deg);
+  width: 28px;
+  height: 2px;
+  margin-left: -26px;
+  margin-top: 14px;
+  position: absolute;
+  background: #fff;
+}
+
+#layers{
+  cursor: grab;
+  position: absolute;
+  width: 160px;
+  padding: 10px;
+  top: 80px;
+  right: 0;
+  background: #ddd;
+}
+
+#layers > button{
+  padding: 0 4px;
+}
+
+#layers > img{
+  width: 160px;
+  height: auto;
+  margin: auto;
+  border: 1px solid #bbb;
+}
+
 #undo::after{
   content: "Undo";
   padding-right: 37px;

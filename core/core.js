@@ -1,5 +1,5 @@
 /*
-VE-paintJS v0.6.3
+VE-paintJS v0.6.4
 Copyright (C) Simon Raichl 2018
 MIT Licence
 Use this as you want, share it as you want, do basically whatever you want with this :)
@@ -7,6 +7,7 @@ Use this as you want, share it as you want, do basically whatever you want with 
 
 import {Draw} from "./draw.js";
 import {Settings} from "./settings.js";
+import {Layers} from "./layers.js";
 
 const draw = new Draw();
 
