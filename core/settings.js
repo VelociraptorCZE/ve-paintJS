@@ -1,5 +1,5 @@
 /*
-VE-paintJS v0.6.4
+VE-paintJS v0.6.5
 Copyright (C) Simon Raichl 2018
 MIT Licence
 Use this as you want, share it as you want, do basically whatever you want with this :)
@@ -69,9 +69,6 @@ export class Settings extends Draw{
       this.Backup(steps++);
     }
   }
-  Eraser(){
-    eraser = eraserid.checked;
-  }
   BgStretch(){
     this.Bg().stretch = bgstretchid.checked;
   }
@@ -134,21 +131,29 @@ export class Settings extends Draw{
     }
     catch{}
   }
-  Mode(param){
+  Mode(param, destroyAll = false){
     let toggle = (str, bool, p) =>{
       idList[p].innerHTML = str + " " + idName[p] + " mode";
       modes[p] = bool;
     }
-    if (modes[param]){
-      toggle("Enable", false, param);
-    }
-    else{
-      toggle("Disable", true, param);
+    if (!destroyAll && !eraser) {
+      if (modes[param]){
+        toggle("Enable", false, param);
+      }
+      else{
+        toggle("Disable", true, param);
+      }
     }
     for (var i = 0; i < modes.length; i++) {
-      if (i != param) {
+      if (i != param || destroyAll) {
         toggle("Enable", false, i);
       }
+    }
+  }
+  Eraser(){
+    eraser = eraserid.checked;
+    if (eraser) {
+      this.Mode("", true);
     }
   }
   Download(param = "download"){

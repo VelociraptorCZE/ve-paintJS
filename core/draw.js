@@ -1,5 +1,5 @@
 /*
-VE-paintJS v0.6.4
+VE-paintJS v0.6.5
 Copyright (C) Simon Raichl 2018
 MIT Licence
 Use this as you want, share it as you want, do basically whatever you want with this :)
@@ -119,10 +119,6 @@ export class Draw{
     }
   }
   Draw(e){
-    if (_brush.size == 0){
-      c.style = "cursor: default !important";
-      c3.style = "cursor: default !important";
-    }
     cn.globalCompositeOperation = "source-over";
     cnp.clearRect(0, 0, c.width, c.height);
     if (line.x2 === undefined && line.x1 !== undefined && modes[0]){
@@ -183,10 +179,23 @@ export class DrawSupport extends Draw{
     param.fillStyle = _brush.color;
     param.fill();
   }
+  Fill(can, x2, y2, line = false){
+    if (fillType == 0) {
+      if (line) {
+        return _brush.color;
+      }
+      else{
+        return _brush.fill;
+      }
+    }
+    else{
+      return this.CreateGradient(can, x2, y2);
+    }
+  }
   DrawNewLine(can = cn, x2 = line.x2, y2 = line.y2){
     can.beginPath();
     can.lineWidth = _brush.size * 2;
-    can.strokeStyle = _brush.color;
+    can.strokeStyle = this.Fill(can, x2, y2, true);
     can.moveTo(line.x1, line.y1);
     can.lineTo(x2, y2);
     can.stroke();
@@ -197,14 +206,9 @@ export class DrawSupport extends Draw{
     can.lineWidth = _brush.size;
     can.strokeStyle = _brush.color;
     can.rect(line.x1, line.y1, x2, y2);
-    if (fillType == 0) {
-      can.fillStyle = _brush.fill;
-    }
-    else{
-      can.fillStyle = this.CreateGradient(can, x2, y2);
-    }
+    can.fillStyle = this.Fill(can, x2, y2);
     can.fill();
-    if (_brush.size > 0){
+    if (_brush.size > 0.5){
       can.stroke();
     }
     can.closePath();
