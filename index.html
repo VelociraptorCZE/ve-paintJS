@@ -11,7 +11,7 @@
     <div id = "ovr-win-frm" class = "bor-rad-tny">
       <span id = "ovr-win-ext" class = "icon-cross clr-dar hov-blu pos-abs top-0 rgt-0 tra-500"></span>
       <h2><img src = "img/paint.png" alt = "logo" width = 32 height = 32> VE-paintJS</h2>
-      <h3>v0.6.5</h3>
+      <h3>v0.7.0</h3>
       <p>A simple painting tool based on JS and HTML5 canvas.</p>
         <p><a href = "https://github.com/VelociraptorCZE/ve-paintJS" target="_blank" class = "dar-but pad-tny">GitHub</a></p>
       <small>Copyright (C) Šimon Raichl 2018, MIT Licence</small>
@@ -92,23 +92,26 @@
       </div>
     </div>
   </div>
-  <div class = "rwp">
+  <div class = "rwp" id = "main">
     <canvas id = "finalCanvas" width = 1280 height = 720></canvas>
     <canvas id = "bgCanvas" width = 1280 height = 720></canvas>
     <canvas id = "paintCanvas" width = 1280 height = 720></canvas>
     <canvas id = "previewCanvas" width = 1280 height = 720></canvas>
   </div>
-  <div id = "layers" class = "invisible">
-    <button onclick = "this.parentElement.classList.toggle('invisible')" class = "pos-abs rgt-0 top-0 red-but" style = "transform:scale(0.5)"><span class = "clr-whi icon-cross"></span></button>
-    Main layer<br>
-    <img src = "#" alt = "mainCanvas" id = "img_c">
+  <div id = "layers" class = "">
+    <div class = "bg-blu clr-whi txt-bld pad-10px bor-lt" id = "layersBar">Layer manager
+      <button onclick = "this.parentElement.parentElement.classList.toggle('invisible')" class = "pos-abs rgt-0 top-0 red-but" style = "transform:scale(0.5) translate(20px,-22px)"><span class = "clr-whi icon-cross"></span></button>
+    </div>
+    <div class = "layerCaption">Main layer</div>
+    <img src = "#" alt = "mainCanvas" id = "img_paintCanvas">
     <button class = "blu-but" id = "lay1"><span class = "icon-eye"></span></button>
     <button class = "blu-but" onclick="cn.clearRect(0,0,c.width,c.height)"><span class = "icon-trash"></span></button>
     <br>
-    Background layer<br>
-    <img src = "#" alt = "bgCanvas" id = "img_b">
+    <div>Background layer</div>
+    <img src = "#" alt = "bgCanvas" id = "img-b">
     <button class = "blu-but" id = "lay2"><span class = "icon-eye"></span></button>
     <button class = "blu-but" onclick="cnbg.clearRect(0,0,c.width,c.height)"><span class = "icon-trash"></span></button>
+    <br><button class = "blu-but" id = "addLayer" style = "padding:6px;margin-top:32px">Add layer</button>
   </div>
   <link rel = "stylesheet" href = "ve-runner/css/ve-runner.min.css">
   <link rel = "stylesheet" href = "css/paint.css">

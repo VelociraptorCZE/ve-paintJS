@@ -44,13 +44,18 @@ canvas{
 }
 
 #layers{
-  cursor: grab;
   position: absolute;
   width: 160px;
-  padding: 10px;
   top: 80px;
   right: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
   background: #ddd;
+  padding: 10px;
+}
+
+#layersBar{
+  margin: -10px -10px 0;
 }
 
 #layers > button{
@@ -61,6 +66,7 @@ canvas{
   width: 160px;
   height: auto;
   margin: auto;
+  cursor: pointer;
   border: 1px solid #bbb;
 }
 

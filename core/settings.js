@@ -1,5 +1,5 @@
 /*
-VE-paintJS v0.6.5
+VE-paintJS v0.7.0
 Copyright (C) Simon Raichl 2018
 MIT Licence
 Use this as you want, share it as you want, do basically whatever you want with this :)
@@ -49,7 +49,7 @@ export class Settings extends Draw{
   Backup(param){
     this.Clear(true);
     try {
-      return cn.drawImage(backups[param], 0, 0);
+      return backups[param].layer.drawImage(backups[param], 0, 0);
     }
     catch{}
   }
@@ -75,7 +75,7 @@ export class Settings extends Draw{
   Blur(){
     let param = getId("blur").value;
     this._Brush().blur = param;
-    cn.filter = "blur(" + param + "px)";
+    activeLayer[1].filter = "blur(" + param + "px)";
   }
   Deform(){
     this._Brush().def = getId("deform").value/10;
@@ -83,7 +83,7 @@ export class Settings extends Draw{
   Alpha(param){
     param = getId("alpha").value/100;
     this._Brush().alpha = param;
-    cn.globalAlpha = param;
+    activeLayer[1].globalAlpha = param;
   }
   BgAlpha(){
     let param = getId("bgAlpha").value/100;
@@ -162,10 +162,12 @@ export class Settings extends Draw{
     if (file === null){
       return;
     }
-    cnf.drawImage(c2, 0, 0);
-    cnf.drawImage(c, 0, 0);
+    for (let i = 2; i < c_list.length; i++) {
+      cnf.drawImage(c_list[i], 0, 0);
+    }
     e.href = cf.toDataURL();
     e.download = file;
+    cnf.clearRect(0, 0, c.width, c.height);
   }
   Action(name, func, listener, val){
     let attr = document.querySelector(name);
@@ -196,7 +198,6 @@ export class Settings extends Draw{
     else{
       val = vals.split(",");
     }
-    let c_list = [c, c2, c3, cf];
     for (var i = 0; i < c_list.length; i++) {
       c_list[i].setAttribute("width", val[0]);
       c_list[i].setAttribute("height", val[1]);

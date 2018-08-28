@@ -1,5 +1,5 @@
 /*
-VE-paintJS v0.6.5
+VE-paintJS v0.7.0
 Copyright (C) Simon Raichl 2018
 MIT Licence
 Use this as you want, share it as you want, do basically whatever you want with this :)
@@ -30,6 +30,7 @@ const setbgimgid = getId("setBgImg");
 const loadimgid = getId("loadImg");
 const bgstretchid = getId("bgstretch");
 const layerid = getId("layers");
+const layerbarid = getId("layersBar");
 
 const modes = [false, false];
 const idList = [lnid, rectid];
@@ -39,6 +40,9 @@ var fillType = 0;
 var eraser = false;
 var backups = [];
 var steps = 0;
+var c_list = [c3, cf, c2, c];
+var img_list = ["", "", "img-b", "img_paintCanvas"];
+var activeLayer = [c, cn];
 
 // I just wanted to get rid of the jQuery dependency
 
@@ -97,6 +101,6 @@ var dom = new DOMTools();
 ovr_o.addEventListener("mouseup", dom.opnOvr);
 ovr_e.addEventListener("mouseup", dom.extOvr);
 c3.addEventListener("mousedown", dom.start);
-c.addEventListener("mouseup", dom.stop);
+window.addEventListener("mouseup", dom.stop);
 
 dom.allDrp(document.getElementsByClassName("drp-tog"));

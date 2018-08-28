@@ -1,29 +1,83 @@
 /*
-VE-paintJS v0.6.5
+VE-paintJS v0.7.0
 Copyright (C) Simon Raichl 2018
 MIT Licence
 Use this as you want, share it as you want, do basically whatever you want with this :)
 */
 
-let active;
+let active, layerStack = 0;
 
+import {Draw} from "./draw.js";
 import {Settings} from "./settings.js";
 
+var draw = new Draw();
+
 export class Layers extends Settings{
+  SetActive(param){
+    activeLayer = param;
+  }
   GetCanvasState(firstCheck = false){
     if (!layerid.classList.contains("invisible") || firstCheck) {
-      getId("img_c").setAttribute("src", c.toDataURL());
-      getId("img_b").setAttribute("src", c2.toDataURL());
+      for (let i = 2; i < c_list.length; i++) {
+        getId(img_list[i]).setAttribute("src", c_list[i].toDataURL());
+        if (i > 2 && firstCheck){
+          let id = getId(c_list[i].id);
+          this.Action("#" + img_list[i], this.SetActive, "click", [id, c2d(id)]);
+        }
+      }
     }
   }
   ToggleLayer(param){
     param[0].classList.toggle("invisible");
     param[1].classList.toggle("striked");
   }
+  AddLayer(){
+    let layer = document.createElement("canvas");
+    let name = "customCanvas" + document.querySelectorAll("canvas[id*=custom]").length;
+    layer.setAttribute("id", name);
+    layer.setAttribute("width", c.width);
+    layer.setAttribute("height", c.height);
+    getId("main").insertBefore(layer, c3);
+    this.Action("#" + name, this.GetCanvasState, "mouseup");
+    c_list.push(layer);
+    let img = document.createElement("img"); let id = "img_" + name;
+    img.setAttribute("id", id); let imgLength = img_list.length;
+    layerid.insertBefore(img, document.getElementsByClassName("layerCaption")[imgLength-4-layerStack]);
+    img_list.push(id);
+    let l = {c: getId(name), cn: c2d(getId(name))};
+    activeLayer = [l.c, l.cn];
+    l.c.addEventListener("mouseup", draw.DrawShape);
+    l.c.addEventListener("mouseup", draw.DrawText);
+    l.c.onmouseup = () => {
+      steps++;
+      backups[steps] = new Image();
+      backups[steps].src = l.c.toDataURL("image/png");
+      backups[steps].layer = activeLayer[1];
+    }
+    this.Action("#" + id, this.SetActive, "click", activeLayer);
+    let div = document.createElement("div");
+    div.setAttribute("class", "layerCaption"); div.setAttribute("contenteditable", "true");
+    div.innerHTML = name; layerid.insertBefore(div, img);
+    let toggleButton = document.createElement("button"); let togName = "tog_" + name;
+    toggleButton.innerHTML = "<span class = 'icon-eye'></span>";
+    toggleButton.setAttribute("id", togName); toggleButton.setAttribute("class", "blu-but");
+    layerid.insertBefore(toggleButton, document.getElementsByClassName("layerCaption")[imgLength-3-layerStack]);
+    this.Action("#" + togName, toggle, "click", [l.c, getId(togName)]);
+    let clearButton = document.createElement("button"); let clearName = "clr_" + name;
+    clearButton.innerHTML = "<span class = 'icon-trash'></span>";
+    clearButton.setAttribute("id", clearName); clearButton.setAttribute("class", "blu-but"); clearButton.style.marginLeft = "4px";
+    layerid.insertBefore(clearButton, document.getElementsByClassName("layerCaption")[imgLength-3-layerStack]);
+    let clr = () =>{
+      l.cn.clearRect(0, 0, c.width, c.height);
+    }
+    this.Action("#" + clearName, clr, "click");
+    layerStack++;
+    this.GetCanvasState();
+  }
   Drag(e){
-    layerid.style.cursor = "grabbing";
+    layerbarid.style.cursor = "grabbing";
     layerid.style.left = e.clientX - layerid.getBoundingClientRect().width/2 + "px";
-    layerid.style.top = e.clientY - layerid.getBoundingClientRect().height/2 + "px";
+    layerid.style.top = e.clientY - 30 + "px";
   }
 }
 
@@ -43,12 +97,23 @@ layerid.onmousedown = () =>{
   active = true;
 }
 
-document.onmouseup = () =>{
-  active = false;
-  layerid.style.cursor = "grab";
+getId("addLayer").onclick = () =>{
+  layers.AddLayer();
 }
 
-layerid.onmousemove = (e) =>{
+document.onclick = () =>{
+  for (var i = 0; i < document.querySelectorAll("img[id *= img_]").length; i++) {
+    document.querySelectorAll("img[id *= img_]")[i].removeAttribute("style");
+  }
+  getId("img_" + activeLayer[0].id).style.outline = "2px solid #1a1a1a";
+}
+
+document.onmouseup = () =>{
+  active = false;
+  layerbarid.style.cursor = "grab";
+}
+
+layerbarid.onmousemove = (e) =>{
   if (active) {
     layers.Drag(e);
   }

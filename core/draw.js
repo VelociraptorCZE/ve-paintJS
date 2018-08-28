@@ -1,5 +1,5 @@
 /*
-VE-paintJS v0.6.5
+VE-paintJS v0.7.0
 Copyright (C) Simon Raichl 2018
 MIT Licence
 Use this as you want, share it as you want, do basically whatever you want with this :)
@@ -66,15 +66,17 @@ export class Draw{
     window.addEventListener("mousemove", this.Draw);
     window.addEventListener("touchstart", () => {isMobile = true;});
     window.addEventListener("touchmove", this.Draw);
-    c.addEventListener("mouseup", this.DrawShape);
-    c.addEventListener("mouseup", this.DrawText);
     c3.onmousedown = () => {
+      cnp.globalAlpha = 0.6;
       active = true;
     }
+    c.addEventListener("mouseup", this.DrawShape);
+    c.addEventListener("mouseup", this.DrawText);
     c.onmouseup = () => {
       steps++;
       backups[steps] = new Image();
-      backups[steps].src = c.toDataURL("image/png");
+      backups[steps].src = activeLayer[0].toDataURL("image/png");
+      backups[steps].layer = activeLayer[1];
     }
     window.onmouseup = () => {
       active = false;
@@ -110,7 +112,7 @@ export class Draw{
             draw.DrawNewLine();
           }
           else{
-            draw.DrawNewRect(cn, e.clientX, e.clientY);
+            draw.DrawNewRect(activeLayer[1], e.clientX, e.clientY);
           }
         }
         line.x1 = undefined;
@@ -119,7 +121,7 @@ export class Draw{
     }
   }
   Draw(e){
-    cn.globalCompositeOperation = "source-over";
+    activeLayer[1].globalCompositeOperation = "source-over";
     cnp.clearRect(0, 0, c.width, c.height);
     if (line.x2 === undefined && line.x1 !== undefined && modes[0]){
       draw.DrawNewLine(cnp, e.offsetX, e.offsetY);
@@ -134,10 +136,10 @@ export class Draw{
     if ((active || isMobile) && !modes[0] && !modes[1]){
       line.x1 = undefined;
       if (eraser){
-        draw.Erase(cn, e);
+        draw.Erase(activeLayer[1], e);
       }
       else{
-        draw.DrawController(cn, e);
+        draw.DrawController(activeLayer[1], e);
       }
     }
   }
@@ -145,7 +147,7 @@ export class Draw{
     window.requestAnimationFrame(this.Draw);
   }
   Clear(backup = false){
-    cn.clearRect(0, 0, c.width, c.height);
+    activeLayer[1].clearRect(0, 0, c.width, c.height);
     if (!backup){
       cnbg.clearRect(0, 0, c.width, c.height);
       backups = [];
@@ -173,7 +175,7 @@ export class DrawSupport extends Draw{
       param.arc(x, y, _brush.size, 0, Math.PI * _brush.def);
     }
     if (_brush.shape == 1 && (!active || eraser || !_brush.continuous)){
-        param.fillRect(x, y, _brush.size * 2, _brush.size * 2);
+      param.fillRect(x, y, _brush.size * 2, _brush.size * 2);
     }
     param.closePath();
     param.fillStyle = _brush.color;
@@ -192,7 +194,7 @@ export class DrawSupport extends Draw{
       return this.CreateGradient(can, x2, y2);
     }
   }
-  DrawNewLine(can = cn, x2 = line.x2, y2 = line.y2){
+  DrawNewLine(can = activeLayer[1], x2 = line.x2, y2 = line.y2){
     can.beginPath();
     can.lineWidth = _brush.size * 2;
     can.strokeStyle = this.Fill(can, x2, y2, true);
@@ -201,7 +203,7 @@ export class DrawSupport extends Draw{
     can.stroke();
     can.closePath();
   }
-  DrawNewRect(can = cn, x2 = line.x2, y2 = line.y2){
+  DrawNewRect(can = activeLayer[1], x2 = line.x2, y2 = line.y2){
     can.beginPath();
     can.lineWidth = _brush.size;
     can.strokeStyle = _brush.color;
@@ -213,7 +215,7 @@ export class DrawSupport extends Draw{
     }
     can.closePath();
   }
-  DrawNewText(can = cn, x = text.x, y = text.y){
+  DrawNewText(can = activeLayer[1], x = text.x, y = text.y){
     can.font = text.font;
     can.lineWidth = _brush.size/10;
     can.strokeStyle = _brush.color;
@@ -227,7 +229,7 @@ export class DrawSupport extends Draw{
     }
   }
   Erase(param, e){
-    cn.globalCompositeOperation = "destination-out";
+    activeLayer[1].globalCompositeOperation = "destination-out";
     this.DrawController(param, e);
   }
 }
