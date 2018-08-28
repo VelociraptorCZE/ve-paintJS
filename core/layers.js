@@ -1,5 +1,5 @@
 /*
-VE-paintJS v0.7.0
+VE-paintJS v0.7.3
 Copyright (C) Simon Raichl 2018
 MIT Licence
 Use this as you want, share it as you want, do basically whatever you want with this :)
@@ -46,14 +46,7 @@ export class Layers extends Settings{
     img_list.push(id);
     let l = {c: getId(name), cn: c2d(getId(name))};
     activeLayer = [l.c, l.cn];
-    l.c.addEventListener("mouseup", draw.DrawShape);
-    l.c.addEventListener("mouseup", draw.DrawText);
-    l.c.onmouseup = () => {
-      steps++;
-      backups[steps] = new Image();
-      backups[steps].src = l.c.toDataURL("image/png");
-      backups[steps].layer = activeLayer[1];
-    }
+    this.InitNewCanvas(l.c, draw);
     this.Action("#" + id, this.SetActive, "click", activeLayer);
     let div = document.createElement("div");
     div.setAttribute("class", "layerCaption"); div.setAttribute("contenteditable", "true");
@@ -98,6 +91,10 @@ layerid.onmousedown = () =>{
 }
 
 getId("addLayer").onclick = () =>{
+  layers.AddLayer();
+}
+
+getId("addLayer2").onclick = () =>{
   layers.AddLayer();
 }
 

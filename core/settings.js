@@ -1,5 +1,5 @@
 /*
-VE-paintJS v0.7.0
+VE-paintJS v0.7.3
 Copyright (C) Simon Raichl 2018
 MIT Licence
 Use this as you want, share it as you want, do basically whatever you want with this :)
@@ -19,6 +19,14 @@ export class Settings extends Draw{
       this._Brush().fill1 = "transparent";
     }
   }
+  Composition(){
+    let allComps = document.querySelectorAll("input[data-comp]");
+    for (var i = 0; i < allComps.length; i++) {
+      if (allComps[i].checked){
+        this._Brush().composition = allComps[i].getAttribute("data-comp");
+      }
+    }
+  }
   Fill(param){
     if (param == 0) {
       this._Brush().fill = getId("fill").value;
@@ -30,7 +38,10 @@ export class Settings extends Draw{
   Size(){
     this._Brush().size = getId("size").value;
   }
-  Shape(param = 0){
+  Rotation(){
+    this._Brush().rotation = getId("rotate").value;
+  }
+  Shape(){
     this._Brush().shape = getId("shape").value;
   }
   NewText(){
@@ -239,6 +250,10 @@ const continuous = () =>{
   set.Continuous();
 }
 
+const comp = () =>{
+  set.Composition();
+}
+
 const newDef = () =>{
   set.Deform();
 }
@@ -253,6 +268,10 @@ const newBgAlpha = () =>{
 
 const newText = () =>{
   set.NewText();
+}
+
+const newRotate = () =>{
+  set.Rotation();
 }
 
 const newFont = () =>{
@@ -325,6 +344,8 @@ set.Action("#size", newSize, "change");
 set.Action("#color", newColor, "change");
 set.Action("#shape", newShape, "change")
 set.Action("#bgAlpha", newBgAlpha, "change");
+set.Action("#rotate", newRotate, "change");
+set.Action("#comp", comp, "click");
 
 document.addEventListener("click", (e) => {
   if (e.target.id == "confirmSize" || e.target.className == "icon-pencil"){
@@ -332,7 +353,7 @@ document.addEventListener("click", (e) => {
   }
 });
 
-document.onkeyup = (e) =>{
+document.onkeyup = (e) => {
   if (e.ctrlKey && e.keyCode == 90) {
     set.Undo();
   }

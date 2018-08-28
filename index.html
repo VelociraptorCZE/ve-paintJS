@@ -5,13 +5,14 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
    <title>VE-paintJS</title>
    <link rel="shortcut icon" href="img/favicon.ico">
+   <link rel = "stylesheet" href = "ve-runner/css/ve-runner.min.css">
 </head>
 <body>
   <div id = "ovr-win">
     <div id = "ovr-win-frm" class = "bor-rad-tny">
       <span id = "ovr-win-ext" class = "icon-cross clr-dar hov-blu pos-abs top-0 rgt-0 tra-500"></span>
       <h2><img src = "img/paint.png" alt = "logo" width = 32 height = 32> VE-paintJS</h2>
-      <h3>v0.7.0</h3>
+      <h3>v0.7.3</h3>
       <p>A simple painting tool based on JS and HTML5 canvas.</p>
         <p><a href = "https://github.com/VelociraptorCZE/ve-paintJS" target="_blank" class = "dar-but pad-tny">GitHub</a></p>
       <small>Copyright (C) Šimon Raichl 2018, MIT Licence</small>
@@ -38,9 +39,10 @@
       <span class = "blu-but drp-tog">Settings</span>
       <ul class = "set">
         <li><label style = "padding-left: 94px">Blur <input type = "range" id = "blur" class = "ran" min = "0" max = "30" value = "0"></label></li>
-        <li><label style = "padding-left: 93px">Size <input type = "range" id = "size" class = "ran" min = "0.5" max = "50" value = "10"></label></li>
+        <li><label style = "padding-left: 94px">Size <input type = "range" id = "size" class = "ran" min = "0.5" max = "50" value = "10"></label></li>
         <li><label style = "padding-left: 78px">Shape <input type = "range" id = "shape" class = "ran" min = "0" max = "1" value = "0"></label></li>
         <li><label style = "padding-left: 81px">Alpha <input type = "range" id = "alpha" class = "ran" min = "1" max = "100" value = "100"></label></li>
+        <li><label style = "padding-left: 62px">Rotation <input type = "range" id = "rotate" class = "ran" min = "0" max = "60" value = "0"></label></li>
         <li><label style = "padding-left: 33px">Deformation <input style = "transform:rotate(0.5turn)" type = "range" id = "deform" class = "ran" min = "1" max = "20" value = "20"></label></li>
         <li><label><input style = "margin-top: -55px" type = "text" id = "canvasSize" class = "txt-inp-blu anim" value = "1280*720" placeholder= "Resolution"><span id = "confirmSize" class = "blu-but pad-tny"><span class = "icon-pencil"></span></span></label></li>
       </ul>
@@ -78,6 +80,20 @@
       <span class = "blu-but drp-tog">Layers</span>
       <ul>
         <li><label onclick = "getId('layers').classList.toggle('invisible')">Show layer manager</label></li>
+        <li><label id = "addLayer2" style = "padding-right: 108px">Add layer</label></li>
+      </ul>
+    </div>
+    <div class = "drp">
+      <span class = "blu-but drp-tog">Composition</span>
+      <ul id = "comp">
+        <li><label class="rad-lst">Default<input type="radio" name="composition" data-comp = "source-over" checked><span class="rad"></span></label></li>
+        <li><label class="rad-lst">Xor<input type="radio" name="composition" data-comp = "xor"><span class="rad"></span></label></li>
+        <li><label class="rad-lst">Multiply<input type="radio" name="composition" data-comp = "multiply"><span class="rad"></span></label></li>
+        <li><label class="rad-lst">Overlay<input type="radio" name="composition" data-comp = "overlay"><span class="rad"></span></label></li>
+        <li><label class="rad-lst">Soft light<input type="radio" name="composition" data-comp = "soft-light"><span class="rad"></span></label></li>
+        <li><label class="rad-lst">Destanation over<input type="radio" name="composition" data-comp = "destination-over"><span class="rad"></span></label></li>
+        <li><label class="rad-lst">Saturation<input type="radio" name="composition" data-comp = "saturation"><span class="rad"></span></label></li>
+        <li><label class="rad-lst">Lighten<input type="radio" name="composition" data-comp = "lighten"><span class="rad"></span></label></li>
       </ul>
     </div>
     <div id = "ovr-win-opn" style = "margin-left:auto" class = "blu-but">About</div>
@@ -113,7 +129,6 @@
     <button class = "blu-but" onclick="cnbg.clearRect(0,0,c.width,c.height)"><span class = "icon-trash"></span></button>
     <br><button class = "blu-but" id = "addLayer" style = "padding:6px;margin-top:32px">Add layer</button>
   </div>
-  <link rel = "stylesheet" href = "ve-runner/css/ve-runner.min.css">
   <link rel = "stylesheet" href = "css/paint.css">
   <script src = "core/config.js"></script>
   <script type="module">

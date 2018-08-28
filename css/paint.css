@@ -21,6 +21,15 @@ span.blu-but{
   padding: 8px 6px;
 }
 
+.rad-lst input ~ .rad{
+  background: #ccc;
+}
+
+.drp .rad{
+  margin-left: 8px;
+  border-color: #0074cc;
+}
+
 canvas{
   border: 1px solid #aaa;
   cursor: none;
@@ -41,6 +50,14 @@ canvas{
   margin-top: 14px;
   position: absolute;
   background: #fff;
+}
+
+#comp{
+  margin-top: 25px;
+}
+
+#comp > li{
+  margin-top: -30px;
 }
 
 #layers{

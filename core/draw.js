@@ -1,5 +1,5 @@
 /*
-VE-paintJS v0.7.0
+VE-paintJS v0.7.3
 Copyright (C) Simon Raichl 2018
 MIT Licence
 Use this as you want, share it as you want, do basically whatever you want with this :)
@@ -8,13 +8,15 @@ Use this as you want, share it as you want, do basically whatever you want with 
 let active, isMobile;
 
 let Brush = class{
-  constructor(size = 10, color = "#000", fill = "#000", fill1 = "transparent", shape = 0, filter = 0, def = 2, alpha = 1, continuous = true) {
+  constructor(size = 10, color = "#000", fill = "#000", fill1 = "transparent", rotation = 0, shape = 0, filter = 0, composition = "source-over", def = 2, alpha = 1, continuous = true) {
     this.size = size;
     this.color = color;
     this.fill = fill;
     this.fill1 = fill1;
+    this.rotation = rotation;
     this.shape = shape;
     this.filter = filter;
+    this.composition = composition;
     this.def = def;
     this.alpha = alpha;
     this.continuous = continuous;
@@ -62,6 +64,16 @@ export class Draw{
   Bg(){
     return background;
   }
+  InitNewCanvas(layer, obj){
+    layer.addEventListener("mouseup", obj.DrawShape);
+    layer.addEventListener("mouseup", obj.DrawText);
+    layer.onmouseup = () => {
+      steps++;
+      backups[steps] = new Image();
+      backups[steps].src = layer.toDataURL("image/png");
+      backups[steps].layer = activeLayer[1];
+    }
+  }
   Init(id){
     window.addEventListener("mousemove", this.Draw);
     window.addEventListener("touchstart", () => {isMobile = true;});
@@ -70,14 +82,7 @@ export class Draw{
       cnp.globalAlpha = 0.6;
       active = true;
     }
-    c.addEventListener("mouseup", this.DrawShape);
-    c.addEventListener("mouseup", this.DrawText);
-    c.onmouseup = () => {
-      steps++;
-      backups[steps] = new Image();
-      backups[steps].src = activeLayer[0].toDataURL("image/png");
-      backups[steps].layer = activeLayer[1];
-    }
+    this.InitNewCanvas(c, this);
     window.onmouseup = () => {
       active = false;
       if (!modes[0] && !modes[1]){
@@ -121,7 +126,7 @@ export class Draw{
     }
   }
   Draw(e){
-    activeLayer[1].globalCompositeOperation = "source-over";
+    activeLayer[1].globalCompositeOperation = _brush.composition;
     cnp.clearRect(0, 0, c.width, c.height);
     if (line.x2 === undefined && line.x1 !== undefined && modes[0]){
       draw.DrawNewLine(cnp, e.offsetX, e.offsetY);
@@ -203,19 +208,38 @@ export class DrawSupport extends Draw{
     can.stroke();
     can.closePath();
   }
+  Rotation(){
+    return class{
+      Start(){
+        cnp.save();
+        activeLayer[1].save();
+        cnp.rotate(_brush.rotation * Math.PI / 180);
+        activeLayer[1].rotate(_brush.rotation * Math.PI / 180);
+      }
+      End(){
+        cnp.restore();
+        activeLayer[1].restore();
+      }
+    }
+  }
   DrawNewRect(can = activeLayer[1], x2 = line.x2, y2 = line.y2){
+    let Rotate = this.Rotation();
+    new Rotate().Start();
     can.beginPath();
     can.lineWidth = _brush.size;
     can.strokeStyle = _brush.color;
     can.rect(line.x1, line.y1, x2, y2);
     can.fillStyle = this.Fill(can, x2, y2);
     can.fill();
+    new Rotate().End();
     if (_brush.size > 0.5){
       can.stroke();
     }
     can.closePath();
   }
   DrawNewText(can = activeLayer[1], x = text.x, y = text.y){
+    let Rotate = this.Rotation();
+    new Rotate().Start();
     can.font = text.font;
     can.lineWidth = _brush.size/10;
     can.strokeStyle = _brush.color;
@@ -227,6 +251,7 @@ export class DrawSupport extends Draw{
     else{
       cnp.fillText("You didn't define your text, after the click it won't be printed on the canvas.", x, y);
     }
+    new Rotate().End();
   }
   Erase(param, e){
     activeLayer[1].globalCompositeOperation = "destination-out";
