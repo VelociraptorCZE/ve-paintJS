@@ -61,7 +61,10 @@ export class Settings extends Draw{
     let _Clear = this.Clear();
     new _Clear().Backup();
     try {
+      backups[param].layer.save();
+      backups[param].layer.globalAlpha = 1;
       return backups[param].layer.drawImage(backups[param], 0, 0);
+      backups[param].layer.restore();
     }
     catch{}
   }

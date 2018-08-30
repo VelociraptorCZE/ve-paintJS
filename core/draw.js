@@ -204,7 +204,6 @@ export class DrawSupport extends Draw{
     return localGradient;
   }
   DrawController(param, e){
-    param.lineJoin = "round";
     let x = e.offsetX;
     let y = e.offsetY;
     param.beginPath();
@@ -236,11 +235,12 @@ export class DrawSupport extends Draw{
   }
   Rotation(){
     return class{
-      Start(){
+      Start(can = activeLayer[1], num = 1){
         cnp.save();
         activeLayer[1].save();
         cnp.rotate(_brush.rotation * Math.PI / 180);
         activeLayer[1].rotate(_brush.rotation * Math.PI / 180);
+        can.lineWidth = _brush.size/num;
       }
       End(){
         cnp.restore();
@@ -268,24 +268,22 @@ export class DrawSupport extends Draw{
   }
   DrawNewRect(can = activeLayer[1], x2 = line.x2, y2 = line.y2){
     let Rotate = this.Rotation();
-    new Rotate().Start();
+    new Rotate().Start(can);
     can.beginPath();
-    can.lineWidth = _brush.size;
     can.strokeStyle = _brush.color;
     can.rect(line.x1, line.y1, x2, y2);
     can.fillStyle = this.Fill(can, x2, y2);
     can.fill();
-    new Rotate().End();
     if (_brush.size > 0.5){
       can.stroke();
     }
     can.closePath();
+    new Rotate().End();
   }
   DrawNewText(can = activeLayer[1], x = text.x, y = text.y){
     let Rotate = this.Rotation();
-    new Rotate().Start();
+    new Rotate().Start(can, 10);
     can.font = text.font;
-    can.lineWidth = _brush.size/10;
     can.strokeStyle = _brush.color;
     can.fillStyle = _brush.fill;
     if (text.text !== null) {
