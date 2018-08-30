@@ -1,5 +1,5 @@
 /*
-VE-paintJS v0.7.3
+VE-paintJS v0.7.5
 Copyright (C) Simon Raichl 2018
 MIT Licence
 Use this as you want, share it as you want, do basically whatever you want with this :)
@@ -31,11 +31,13 @@ let Background = class{
 }
 
 let Line = class{
-  constructor(x1, x2, y1, y2){
+  constructor(x1, x2, x3, y1, y2, y3){
     this.x1 = x1;
     this.x2 = x2;
+    this.x3 = x3;
     this.y1 = y1;
     this.y2 = y2;
+    this.y3 = y3;
   }
 }
 
@@ -53,6 +55,24 @@ var _brush = new Brush();
 var line = new Line();
 var text = new NewText();
 var background = new Background();
+
+class ResetCoords{
+  ResetLine(){
+    return class{
+      Line(){
+        line.x1 = undefined;
+        line.x2 = undefined;
+      }
+      Quadratic(){
+        this.Line();
+        line.x3 = undefined;
+      }
+    }
+  }
+}
+
+var resetCoords = new ResetCoords();
+var Reset = resetCoords.ResetLine();
 
 export class Draw{
   _Brush(){
@@ -85,9 +105,8 @@ export class Draw{
     this.InitNewCanvas(c, this);
     window.onmouseup = () => {
       active = false;
-      if (!modes[0] && !modes[1]){
-        line.x1 = undefined;
-        line.x2 = undefined;
+      if (!modes[0] && !modes[1] && !modes[2]){
+        new Reset().Quadratic();
       }
     }
   }
@@ -101,7 +120,7 @@ export class Draw{
     }
   }
   DrawShape(e, statement = false){
-    if (statement || (modes[0] || modes[1])){
+    if (statement || (modes[0] || modes[1] || modes[2])){
       if (line.x1 === undefined){
         line.x1 = e.offsetX;
         line.y1 = e.offsetY;
@@ -116,12 +135,19 @@ export class Draw{
           if (modes[0]){
             draw.DrawNewLine();
           }
-          else{
+          else if (modes[1]){
             draw.DrawNewRect(activeLayer[1], e.clientX, e.clientY);
           }
         }
-        line.x1 = undefined;
-        line.x2 = undefined;
+        if (!modes[2]) {
+          new Reset().Line();
+        }
+      }
+      else if (line.x3 === undefined && line.x2 !== undefined && modes[2]){
+        line.x3 = e.offsetX;
+        line.y3 = e.offsetY;
+        draw.DrawNewQuadratic();
+        new Reset().Quadratic();
       }
     }
   }
@@ -134,12 +160,15 @@ export class Draw{
     else if (line.x2 === undefined && line.x1 !== undefined && modes[1]){
       draw.DrawNewRect(cnp, e.clientX, e.clientY);
     }
+    else if (line.x3 === undefined && line.x2 !== undefined && modes[2]){
+      draw.DrawNewQuadratic(cnp, line.x2, line.y2, e.offsetX, e.offsetY);
+    }
     else if (text.enabled){
       draw.DrawNewText(cnp, e.offsetX, e.offsetY);
     }
     draw.DrawController(cnp, e);
-    if ((active || isMobile) && !modes[0] && !modes[1]){
-      line.x1 = undefined;
+    if ((active || isMobile) && !modes[0] && !modes[1] && !modes[2]){
+      new Reset().Quadratic();
       if (eraser){
         draw.Erase(activeLayer[1], e);
       }
@@ -151,12 +180,18 @@ export class Draw{
   Render(){
     window.requestAnimationFrame(this.Draw);
   }
-  Clear(backup = false){
-    activeLayer[1].clearRect(0, 0, c.width, c.height);
-    if (!backup){
-      cnbg.clearRect(0, 0, c.width, c.height);
-      backups = [];
-      steps = 0;
+  Clear(){
+    return class{
+      WipeAll(){
+        backups = [];
+        steps = 0;
+        for (var i = 0; i < c_list.length; i++) {
+          c2d(c_list[i]).clearRect(0, 0, c.width, c.height);
+        }
+      }
+      Backup(){
+        activeLayer[1].clearRect(0, 0, c.width, c.height);
+      }
     }
   }
 }
@@ -173,7 +208,7 @@ export class DrawSupport extends Draw{
     let x = e.offsetX;
     let y = e.offsetY;
     param.beginPath();
-    if (active && !eraser && !modes[0] && !modes[1] && _brush.continuous){
+    if (active && !eraser && !modes[0] && !modes[1] && !modes[2] && _brush.continuous){
       this.DrawShape(e, true);
     }
     if (_brush.shape == 0){
@@ -199,15 +234,6 @@ export class DrawSupport extends Draw{
       return this.CreateGradient(can, x2, y2);
     }
   }
-  DrawNewLine(can = activeLayer[1], x2 = line.x2, y2 = line.y2){
-    can.beginPath();
-    can.lineWidth = _brush.size * 2;
-    can.strokeStyle = this.Fill(can, x2, y2, true);
-    can.moveTo(line.x1, line.y1);
-    can.lineTo(x2, y2);
-    can.stroke();
-    can.closePath();
-  }
   Rotation(){
     return class{
       Start(){
@@ -221,6 +247,24 @@ export class DrawSupport extends Draw{
         activeLayer[1].restore();
       }
     }
+  }
+  DrawNewLine(can = activeLayer[1], x2 = line.x2, y2 = line.y2){
+    can.beginPath();
+    can.lineWidth = _brush.size * 2;
+    can.strokeStyle = this.Fill(can, x2, y2, true);
+    can.moveTo(line.x1, line.y1);
+    can.lineTo(x2, y2);
+    can.stroke();
+    can.closePath();
+  }
+  DrawNewQuadratic(can = activeLayer[1], x2 = line.x2, y2 = line.y2, x3 = line.x3, y3 = line.y3){
+    can.beginPath();
+    can.lineWidth = _brush.size * 2;
+    can.strokeStyle = this.Fill(can, x3, y3, true);
+    can.moveTo(line.x1, line.y1);
+    can.quadraticCurveTo(x2, y2, x3, y3);
+    can.stroke();
+    can.closePath();
   }
   DrawNewRect(can = activeLayer[1], x2 = line.x2, y2 = line.y2){
     let Rotate = this.Rotation();

@@ -1,5 +1,5 @@
 /*
-VE-paintJS v0.7.3
+VE-paintJS v0.7.5
 Copyright (C) Simon Raichl 2018
 MIT Licence
 Use this as you want, share it as you want, do basically whatever you want with this :)
@@ -8,9 +8,6 @@ Use this as you want, share it as you want, do basically whatever you want with 
 import {Draw} from "./draw.js";
 
 export class Settings extends Draw{
-  Color(){
-    this._Brush().color = getId("color").value;
-  }
   ResFill(param){
     if (param == 0) {
       this._Brush().fill = "transparent";
@@ -35,6 +32,9 @@ export class Settings extends Draw{
       this._Brush().fill1 = getId("fill1").value;
     }
   }
+  Color(){
+    this._Brush().color = getId("color").value;
+  }
   Size(){
     this._Brush().size = getId("size").value;
   }
@@ -58,7 +58,8 @@ export class Settings extends Draw{
     this._Brush().continuous = cont.checked;
   }
   Backup(param){
-    this.Clear(true);
+    let _Clear = this.Clear();
+    new _Clear().Backup();
     try {
       return backups[param].layer.drawImage(backups[param], 0, 0);
     }
@@ -222,10 +223,6 @@ const download = (param) =>{
   set.Download(param);
 }
 
-const newColor = () =>{
-  set.Color();
-}
-
 const newFill = (param) =>{
   set.Fill(param);
 }
@@ -234,16 +231,8 @@ const newBg = () =>{
   set.Background();
 }
 
-const newSize = () =>{
-  set.Size();
-}
-
 const newBlur = () =>{
   set.Blur();
-}
-
-const newShape = () =>{
-  set.Shape();
 }
 
 const continuous = () =>{
@@ -270,16 +259,13 @@ const newText = () =>{
   set.NewText();
 }
 
-const newRotate = () =>{
-  set.Rotation();
-}
-
 const newFont = () =>{
   set.NewFont();
 }
 
 const clear = () =>{
-  set.Clear();
+  let _Clear = set.Clear();
+  new _Clear().WipeAll();
 }
 
 const erase = () =>{
@@ -318,10 +304,31 @@ const resFill = (param) =>{
   set.ResFill(param);
 }
 
+const newShape = () =>{
+  set.Shape();
+}
+
+const newColor = () =>{
+  set.Color();
+}
+
+const newSize = () =>{
+  set.Size();
+}
+
+const newRotate = () =>{
+  set.Rotation();
+}
+
+set.Action("#size", newSize, "change");
+set.Action("#color", newColor, "change");
+set.Action("#shape", newShape, "change");
+set.Action("#rotate", newRotate, "change");
 set.Action("#download", download, "click", "");
 set.Action("#clear", clear, "click", "");
 set.Action("#lineMode", newMode, "click", 0);
 set.Action("#rectMode", newMode, "click", 1);
+set.Action("#quadraticMode", newMode, "click", 2);
 set.Action("#tra-fill", resFill, "click", 0);
 set.Action("#tra-fill1", resFill, "click", 1);
 set.Action("#newText", newText, "click", "");
@@ -340,11 +347,7 @@ set.Action("#fill1", newFill, "change", 1);
 set.Action("#blur", newBlur, "change");
 set.Action("#deform", newDef, "change");
 set.Action("#alpha", newAlpha, "change");
-set.Action("#size", newSize, "change");
-set.Action("#color", newColor, "change");
-set.Action("#shape", newShape, "change")
 set.Action("#bgAlpha", newBgAlpha, "change");
-set.Action("#rotate", newRotate, "change");
 set.Action("#comp", comp, "click");
 
 document.addEventListener("click", (e) => {

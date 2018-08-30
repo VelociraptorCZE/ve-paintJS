@@ -1,5 +1,5 @@
 /*
-VE-paintJS v0.7.3
+VE-paintJS v0.7.5
 Copyright (C) Simon Raichl 2018
 MIT Licence
 Use this as you want, share it as you want, do basically whatever you want with this :)
@@ -24,6 +24,7 @@ const cnf = c2d(cf);
 cnp.globalAlpha = 0.6;
 const lnid = getId("lineMode");
 const rectid = getId("rectMode");
+const quadraticid = getId("quadraticMode");
 const eraserid = getId("eraser");
 const cont = getId("continuous");
 const setbgimgid = getId("setBgImg");
@@ -32,9 +33,9 @@ const bgstretchid = getId("bgstretch");
 const layerid = getId("layers");
 const layerbarid = getId("layersBar");
 
-const modes = [false, false];
-const idList = [lnid, rectid];
-const idName = ["line", "rect"];
+const modes = [false, false, false];
+const idList = [lnid, rectid, quadraticid];
+const idName = ["line", "rect", "q. line"];
 
 var fillType = 0;
 var eraser = false;
