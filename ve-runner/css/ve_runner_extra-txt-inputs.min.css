@@ -1,8 +1,0 @@
-/*
-VE-RUNNER.CSS v1.2.2
-Copyright (C) Simon Raichl 2018
-MIT Licence
-Use this as you want, share it as you want, do basically whatever you want with this :)
-*/
-
-.anim::placeholder{transition:.4s}.anim:focus::placeholder{font-size:.7em;transform:translateY(-22px);color:inherit}.txt-inp-ani{width:65%}.txt-inp-ani:focus{width:80%}[class^=txt-inp-]{padding:8px;padding-top:16px;border:0;outline:0;border-bottom:2px solid;transition:1s;background:0 0;color:#a1a1a1;font-size:15px}.txt-inp-lbl{padding-left:55px}.txt-inp-ico{margin:10px;margin-top:10px}.txt-inp-blu:hover{border-color:#0074cc}.txt-inp-blu:focus{border-color:#33a7ff;color:#33a7ff}.txt-inp-red:hover{border-color:#cc001f}.txt-inp-red:focus{border-color:#ff4d67;color:#ff4d67}.txt-inp-gre:hover{border-color:#00b347}.txt-inp-gre:focus{border-color:#00b347;color:#00b347}.txt-inp-yel:hover{border-color:#ffb31a}.txt-inp-yel:focus{border-color:#fd9;color:#fd9}.val-chk:invalid{border-color:#b61010;color:#b61010}.val-chk:valid{border-color:#07b81c;color:#07b81c}.cps-txt-inp{padding:10px;border:2px solid #1a1a1a;border-radius:20px 0 0 20px}.cps-txt-but{padding:10px;border-radius:0 20px 20px 0}.cps-txt-bor-gre{border:2px solid #00b347}.cps-txt-bor-red{border:2px solid #cc001f}.cps-txt-bor-blu{border:2px solid #0074cc}.cps-txt-bor-yel{border:2px solid #ffb31a}

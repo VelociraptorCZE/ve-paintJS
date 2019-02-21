@@ -1,0 +1,14 @@
+{
+    "name": "ve-paintjs",
+    "version": "0.8.0",
+    "authors": [
+        {
+            "name": "Simon Raichl",
+            "homepage": "https://github.com/velociraptorcze"
+        }
+    ],
+    "license": "MIT",
+    "dependencies": {
+        "wolfuix": "0.9.7"
+    }
+}

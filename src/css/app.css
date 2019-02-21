@@ -1,0 +1,85 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Segoe UI, sans-serif;
+}
+
+.main-menu {
+    background: #22252a;
+    color: #fff;
+    display: flex;
+}
+
+.main-menu, .main-menu * {
+    z-index: 10000;
+}
+
+.main-menu__item {
+    padding: .7rem;
+    background: #16181d;
+    transition: .5s;
+    margin-right: 1px;
+    cursor: pointer;
+}
+
+.main-menu__item:hover {
+    background: #4b4b4f;
+}
+
+.main-menu__item--dropdown {
+    display: none;
+    position: absolute;
+    margin-top: .7rem;
+    margin-left: -.7rem;
+    background: #3e3f3f;
+    color: #fff;
+    cursor: pointer;
+    z-index: 50;
+}
+
+.main-menu__item--dropdown.show {
+    display: block;
+}
+
+.main-menu__item--dropdown--item {
+    padding: .5rem 1rem;
+}
+
+.main-menu__item--dropdown--item:hover {
+    background: #555757;
+}
+
+.main-menu__item--dropdown--item input[type=range] {
+    transform: translate(8px, 6px);
+}
+
+#canvas-area {
+    position: relative;
+}
+
+#canvas-area canvas {
+    position: absolute;
+}
+
+#canvas-preview {
+    cursor: crosshair;
+    z-index: 9999;
+}
+
+#canvas-final {
+    display: none;
+}
+
+#canvas-main {
+    background: url(../../img/squares.svg) repeat;
+}
+
+input {
+    cursor: pointer;
+}
+
+input[type=color] {
+    background: none;
+    border: none;
+    width: 20px;
+}
