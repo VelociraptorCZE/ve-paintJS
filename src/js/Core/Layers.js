@@ -21,12 +21,21 @@ export default class Layers {
                 target: previewLayer.canvas,
                 listener: "mousedown",
                 active: true,
+                callback: ({ activeLayer } = this) => {
+                    const img = new Image();
+                    img.src = activeLayer.canvas.toDataURL();
+                    window.__backup__ = { img: img, layer: activeLayer };
+                }
             },
             {
                 target: window,
                 listener: "mouseup",
                 active: false,
-                callback: () => drawInstance.coords = {}
+                callback: () => {
+                    if (drawInstance.mode === "_freeMode") {
+                        drawInstance.coords = {};
+                    }
+                }
             },
         ];
 

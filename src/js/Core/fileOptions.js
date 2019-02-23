@@ -5,13 +5,18 @@
  */
 
 import getAllLayers from "../UI/canvas.js";
+import { setLayerResolution } from "../UI/canvas.js";
 import WolfuixElemFactory from "../../../node_modules/wolfuix/js/dom/WolfuixElemFactory.js";
 
-export default function fileOptions() {
+export default function fileOptions(drawInstance) {
+    let fitImage = false;
     const elems = WolfuixElemFactory.getElems({
         newFile: "menu-file-new",
         saveFile: "menu-file-save",
-        saveFileLink: "img-save-link"
+        loadFile: "menu-file-load",
+        loadFileFit: "menu-file-load-fit",
+        saveFileLink: "img-save-link",
+        loadFileInput: "img-load-input"
     });
 
     elems.newFile.addEventListener("click", () => {
@@ -20,12 +25,62 @@ export default function fileOptions() {
         });
     });
 
-    elems.saveFile.addEventListener("click", () => {
-        const { saveFileLink } = elems;
-        saveFileLink.href = getImage();
-        saveFileLink.download = "painting.png";
-        saveFileLink.click();
+    elems.saveFile.addEventListener("click", () => saveImage(elems.saveFileLink));
+
+    window.addEventListener("keydown", e => {
+        if (e.ctrlKey) {
+            if (e.key === "s") {
+                e.preventDefault();
+                saveImage(elems.saveFileLink);
+            }
+            if (e.key === "l") {
+                fitImage = false;
+                loadImage(elems.loadFileInput);
+            }
+        }
     });
+
+    const loadImgEvents = [
+        { fit: false, el: elems.loadFile },
+        { fit: true, el: elems.loadFileFit }
+    ];
+
+    loadImgEvents.forEach(({ fit, el }) => {
+        el.addEventListener("click", () => {
+            fitImage = fit;
+            loadImage(elems.loadFileInput);
+        });
+    });
+
+    elems.loadFileInput.addEventListener("change", ({ target }) => {
+        const fileReader = new FileReader();
+        fileReader.onload = async () => {
+            const img = new Image();
+            img.src = fileReader.result.toString();
+            img.onload = new Function();
+            await img.onload();
+            if (!fitImage) {
+                setLayerResolution(img.naturalWidth, img.naturalHeight);
+            }
+            drawInstance.activeLayer.drawImage(img, 0, 0);
+            target.value = "";
+        };
+
+        try {
+            fileReader.readAsDataURL(target.files[0]);
+        }
+        catch (_) {}
+    });
+}
+
+function saveImage(saveFileLink) {
+    saveFileLink.href = getImage();
+    saveFileLink.download = "painting.png";
+    saveFileLink.click();
+}
+
+function loadImage(loadFileInput) {
+    loadFileInput.click();
 }
 
 function getImage() {

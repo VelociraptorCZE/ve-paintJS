@@ -6,7 +6,7 @@
 
 import Brush from "./Brush.js";
 import Layers from "./Layers.js";
-import menuInteraction from "../UI/menuInteraction.js";
+import Exceptions from "../Service/Exceptions.js";
 
 export default class Draw {
     constructor() {
@@ -15,8 +15,6 @@ export default class Draw {
         this.mode = "_freeMode";
         this.composition = "source-over";
         this.coords = {};
-        menuInteraction(this.brush);
-        menuInteraction(this, "composition", true);
     }
 
     draw({ offsetX, offsetY }, preview) {
@@ -28,8 +26,17 @@ export default class Draw {
         else {
             layer = this.activeLayer;
         }
-        this._setLayer(layer);
-        this[this.mode](offsetX, offsetY, preview, layer);
+        this._prepareLayer(layer);
+
+        try {
+            this[this.mode](offsetX, offsetY, preview, layer);
+        }
+        catch (_) {
+            if (!this._thrown) {
+                this._thrown = true;
+                throw Exceptions.notImplemented(this.mode, "Draw");
+            }
+        }
     }
 
     _freeMode(x, y, preview, activeLayer, { brush, coords } = this) {
@@ -51,11 +58,12 @@ export default class Draw {
         }
     }
 
-    _setLayer(activeLayer, { color, opacity } = this.brush) {
+    _prepareLayer(activeLayer, { color, opacity, blur } = this.brush) {
         activeLayer.fillStyle = color;
         activeLayer.strokeStyle = color;
         activeLayer.globalAlpha = opacity / 100;
         activeLayer.globalCompositeOperation = this.composition;
+        activeLayer.filter = `blur(${blur}px)`;
     }
 
     _setCoords(x, y) {

@@ -13,14 +13,14 @@
  *  instance[property] = value
  */
 
-export default function menuInteraction(instance, group, switchInput) {
-    const inputs = [...document.querySelectorAll(`[data-group=${group || instance.typeof}]`)]
+export default function menuInteraction(instance, group) {
+    const inputs = [...document.querySelectorAll(`[data-group=${group || instance.name}]`)]
         .map(item => item.querySelector("input"));
 
     inputs.forEach(input => {
         if (input) {
             input.addEventListener("change", ({ target }) => {
-                instance[input.name] = !switchInput ? target.value : target.getAttribute("data-name");
+                instance[input.name] = !/radio|checkbox/.test(input.type) ? target.value : target.getAttribute("data-name");
             });
         }
     });

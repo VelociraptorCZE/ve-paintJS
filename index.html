@@ -9,12 +9,13 @@
   <script async defer type="module" src="src/js/app.js"></script>
 </head>
 <body>
-<a href="" id="img-save-link"></a>
+<a href="" id="img-save-link" class="d-none"></a>
+<input type="file" id="img-load-input" class="d-none">
 <div class="main-menu" id="main-menu">Loading ...</div>
 <div id="canvas-area">
   <canvas id="canvas-main" width="1280" height="720"></canvas>
   <canvas id="canvas-preview" width="1280" height="720"></canvas>
-  <canvas id="canvas-final" width="1280" height="720"></canvas>
+  <canvas id="canvas-final" class="d-none" width="1280" height="720"></canvas>
 </div>
 </body>
 </html>
