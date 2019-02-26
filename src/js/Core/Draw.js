@@ -69,7 +69,11 @@ export default class Draw {
     _setCoords(x, y) {
         this.coords.x1 = x;
         this.coords.y1 = y;
-    };
+    }
+
+    defaultFallback() {
+        window.__defaultImage__ = this.activeLayer.canvas.toDataURL();
+    }
 
     get activeLayer() {
         return this.layers.activeLayer;

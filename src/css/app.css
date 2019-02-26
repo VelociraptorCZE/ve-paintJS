@@ -2,12 +2,14 @@
     margin: 0;
     padding: 0;
     font-family: Segoe UI, sans-serif;
+    user-select: none;
 }
 
 .main-menu {
     background: #22252a;
     color: #fff;
     display: flex;
+    flex-wrap: wrap;
 }
 
 .main-menu {
@@ -83,4 +85,65 @@
 
 #canvas-main {
     background: url(../../img/squares.svg) repeat;
+}
+
+#layer-manager {
+    z-index: 20000;
+    background: #fff;
+    box-shadow: 0 0 8px #3e3f3f;
+}
+
+#layer-manager__upper-bar {
+    display: flex;
+    padding: .7rem;
+    background: #16181d;
+    color: #fff;
+}
+
+#layer-manager__exit {
+    margin-left: auto;
+    padding: -.5rem;
+    background: #570201;
+    cursor: pointer;
+}
+
+#layer-manager__exit:hover {
+    background: #400201;
+}
+
+#layer-manager__content {
+    padding: 1rem;
+    cursor: default;
+}
+
+#layer-manager__content img {
+    width: 170px;
+    border: 2px solid #bfbfbf;
+    transition: .33s;
+    cursor: pointer;
+}
+
+#layer-manager__content img.active {
+    border-color: #13681d;
+}
+
+.layer-manager__item:first-child {
+    margin-top: 0;
+}
+
+.layer-manager__item {
+    margin-top: 1rem;
+}
+
+.button {
+    background: #16181d;
+    color: #fff;
+    cursor: pointer;
+    border: 0;
+    padding: .3rem;
+    font-size: 20px;
+}
+
+.button:hover {
+    background: #343c46;
 }

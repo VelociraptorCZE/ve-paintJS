@@ -17,6 +17,7 @@ initDropdown(); // Inits dropdown events
 setLayerResolution();
 
 const draw = new Draw();
+draw.defaultFallback();
 
 // Interaction with the menu
 

@@ -9,10 +9,10 @@ export default [
         label: "File",
         group: "file",
         dropdownItems: [
-            { content: "New", id: "menu-file-new" },
-            { content: "Load", id: "menu-file-load" },
-            { content: "Load (fit)", id: "menu-file-load-fit" },
-            { content: "Save", id: "menu-file-save" },
+            { content: "📜 New", id: "menu-file-new" },
+            { content: "📂 Load", id: "menu-file-load" },
+            { content: "📂 Load (fit)", id: "menu-file-load-fit" },
+            { content: "💾 Save", id: "menu-file-save" },
         ]
     },
     {
@@ -42,17 +42,17 @@ export default [
             { content: `Soft light ${generateInput("radio", "composition", { data_name: "soft-light" })}` },
             { content: `Lighten ${generateInput("radio", "composition", { data_name: "lighten" })}` },
             { content: `Darken ${generateInput("radio", "composition", { data_name: "darken" })}` },
+            { content: `Destination over ${generateInput("radio", "composition", { data_name: "destination-over" })}` },
         ]
     },
-    /**
-        TODO
     {
         label: "Layers",
         group: "layers",
         dropdownItems: [
-            { content: `Create new layer`, id: "menu-layer-create" },
+            { content: `➕ Create new layer`, id: "menu-layer-create" },
+            { content: `Show/hide layer manager`, id: "menu-layer-manager" },
         ]
-    }*/
+    }
 ];
 
 function generateInput(type, name, { min = "", max = "", data_name = "", value = "", other = "" } = {}) {

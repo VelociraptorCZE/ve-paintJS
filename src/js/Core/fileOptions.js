@@ -23,6 +23,7 @@ export default function fileOptions(drawInstance) {
         getAllLayers().forEach(canvas => {
             canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
         });
+        drawInstance.layers.resetAllLayers();
     });
 
     elems.saveFile.addEventListener("click", () => saveImage(elems.saveFileLink));
@@ -86,8 +87,8 @@ function loadImage(loadFileInput) {
 function getImage() {
     const layers = getAllLayers();
     const finalCanvas = document.getElementById("canvas-final").getContext("2d");
+    finalCanvas.clearRect(0, 0, finalCanvas.canvas.width, finalCanvas.canvas.height);
     layers.forEach(layer => {
-        finalCanvas.clearRect(0, 0, finalCanvas.canvas.width, finalCanvas.canvas.height);
         finalCanvas.drawImage(layer, 0, 0);
     });
     return finalCanvas.canvas.toDataURL();

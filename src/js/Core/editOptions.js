@@ -10,9 +10,14 @@ export default function editOptions() {
     undo.addEventListener("click", () => {
         try {
             const { img, layer } = window.__backup__;
+            const { globalAlpha, filter } = layer;
             layer.clearRect(0, 0, layer.canvas.width, layer.canvas.height);
+            layer.globalAlpha = 1;
+            layer.filter = "blur(0px)";
             layer.drawImage(img, 0, 0);
+            layer.globalAlpha(globalAlpha);
+            layer.filter = filter;
         }
-        catch (e) {}
+        catch (_) {}
     });
 }

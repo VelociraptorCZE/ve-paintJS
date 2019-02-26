@@ -4,8 +4,11 @@
  *  MIT Licence
  */
 
-export default class Layers {
+import LayerManager from "./LayerManager.js";
+
+export default class Layers extends LayerManager {
     constructor(drawInstance) {
+        super();
         this.drawInstance = drawInstance;
         this.isActive = false;
         this.previewLayer = document.getElementById("canvas-preview").getContext("2d");
@@ -13,6 +16,7 @@ export default class Layers {
         this._activeLayer = 0;
         this._checkLayers();
         this._initLayerListeners();
+        this.addPreview();
     }
 
     _initLayerListeners({ previewLayer, drawInstance } = this) {
@@ -35,6 +39,7 @@ export default class Layers {
                     if (drawInstance.mode === "_freeMode") {
                         drawInstance.coords = {};
                     }
+                    this.renderPreviewImage();
                 }
             },
         ];
@@ -61,16 +66,8 @@ export default class Layers {
         return this.allLayers[this._activeLayer];
     }
 
-    addLayer() {
-        //TODO
-        this._checkLayers();
-    }
-
-    removeLayer(id) {
-        //TODO
-    }
-
-    changeActiveLayer(id) {
-        //TODO
+    set activeLayer(id) {
+        const match = id.match(/\d+/);
+        this._activeLayer = match ? match.toString() : 0;
     }
 }
