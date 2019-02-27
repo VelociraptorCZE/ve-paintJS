@@ -6,7 +6,7 @@
 
 import getAllLayers from "../UI/canvas.js";
 import { setLayerResolution } from "../UI/canvas.js";
-import WolfuixElemFactory from "../../../node_modules/wolfuix/js/dom/WolfuixElemFactory.js";
+import WolfuixElemFactory from "wolfuix/js/dom/WolfuixElemFactory.js";
 
 export default function fileOptions(drawInstance) {
     let fitImage = false;
@@ -55,16 +55,16 @@ export default function fileOptions(drawInstance) {
 
     elems.loadFileInput.addEventListener("change", ({ target }) => {
         const fileReader = new FileReader();
-        fileReader.onload = async () => {
+        fileReader.onload = () => {
             const img = new Image();
+            img.onload = () => {
+                if (!fitImage) {
+                    setLayerResolution(img.naturalWidth, img.naturalHeight);
+                }
+                drawInstance.activeLayer.drawImage(img, 0, 0);
+                target.value = "";
+            };
             img.src = fileReader.result.toString();
-            img.onload = new Function();
-            await img.onload();
-            if (!fitImage) {
-                setLayerResolution(img.naturalWidth, img.naturalHeight);
-            }
-            drawInstance.activeLayer.drawImage(img, 0, 0);
-            target.value = "";
         };
 
         try {

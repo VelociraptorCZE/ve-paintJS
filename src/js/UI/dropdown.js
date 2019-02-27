@@ -4,8 +4,6 @@
  *  MIT License
  */
 
-import Thread from "../../../node_modules/wolfuix/js/lib/Thread.js";
-
 export default function initDropdown() {
     const items = [...document.getElementsByClassName("main-menu__item")];
     items.forEach(item => {
@@ -38,12 +36,11 @@ function setDropdownListeners(dropdown, item) {
     });
 }
 
-async function dropdownToggle(dropdown, mode, target) {
+function dropdownToggle(dropdown, mode, target) {
     const parent = target.parentElement.parentElement;
     if (parent.classList.contains("main-menu__item--dropdown") && mode === "remove") {
         parent.parentElement.focus();
         return;
     }
-    await Thread.sleep(10);
-    dropdown.classList[mode]("show");
+    setTimeout(() => dropdown.classList[mode]("show"), 10);
 }

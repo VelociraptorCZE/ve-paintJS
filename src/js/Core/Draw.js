@@ -68,8 +68,8 @@ export default class Draw {
     }
 
     _textMode(x, y, preview, activeLayer) {
-        activeLayer.fillText(this.text.currentText, x, y);
         activeLayer.font = this.font;
+        activeLayer.fillText(this.text.currentText, x, y);
     }
 
     _prepareLayer(activeLayer, { color, opacity, blur } = this.brush) {
