@@ -1,8 +1,8 @@
 /**
  *  VE-paintJS
  *  Copyright (c) Simon Raichl 2018 - 2019
- *  MIT Licence
-*/
+ *  MIT License
+ */
 
 import Thread from "../../../node_modules/wolfuix/js/lib/Thread.js";
 

@@ -1,9 +1,8 @@
 /**
  *  VE-paintJS
  *  Copyright (c) Simon Raichl 2018 - 2019
- *  MIT Licence
+ *  MIT License
  */
-
 
 /** @inheritDoc
  *  This function accesses to the property of the given

@@ -1,7 +1,7 @@
 /**
  *  VE-paintJS
  *  Copyright (c) Simon Raichl 2018 - 2019
- *  MIT Licence
+ *  MIT License
  */
 
 export default function immutableProperty(o, propertyName, value) {

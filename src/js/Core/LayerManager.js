@@ -1,12 +1,13 @@
 /**
  *  VE-paintJS
  *  Copyright (c) Simon Raichl 2018 - 2019
- *  MIT Licence
+ *  MIT License
  */
 
 import WolfuixElemFactory from "../../../node_modules/wolfuix/js/dom/WolfuixElemFactory.js";
 import DragDropComponent from "../../../node_modules/wolfuix/js/components/DragDropComponent.js";
 import getAllLayers from "../UI/canvas.js";
+import { setLayerResolution } from "../UI/canvas.js";
 
 export default class LayerManager {
     constructor() {
@@ -15,7 +16,8 @@ export default class LayerManager {
             create: "menu-layer-create",
             menuLayerManager: "menu-layer-manager",
             layerManager: "layer-manager",
-            exit: "layer-manager__exit"
+            exit: "layer-manager__exit",
+            layerSize: "menu-layer-size"
         });
 
         this.defaultPreview = "canvas-main-preview";
@@ -37,6 +39,19 @@ export default class LayerManager {
         });
 
         elems.create.addEventListener("click", () => this.addLayer());
+        elems.layerSize.addEventListener("click", () => this._setLayerResolution());
+    }
+
+    _setLayerResolution() {
+        const { width, height } = this.activeLayer.canvas;
+        const res = prompt("New layer resolution in px: (w, h)", `${width}, ${height}`)
+            .replace(/\s+/, "")
+            .split(",")
+            .map(res => Number(res));
+
+        setLayerResolution(...res);
+        this.drawInstance.defaultFallback();
+        this.resetAllPreviews();
     }
 
     switchLayer(target = this.defaultPreview, { previewClass } = this) {
@@ -67,6 +82,7 @@ export default class LayerManager {
             if (!document.getElementById(id)) {
                 const source = `
                 <div class="layer-manager__item">
+                    <div contenteditable="true">${LayerManager.canvasId(id)}</div>
                     <img src="" alt="" id="${id}" class="${this.previewClass}">
                     <br>
                     <button class="button remove-layer">🗑️</button>
@@ -85,7 +101,7 @@ export default class LayerManager {
         }
         else {
             if (confirm("Do you really want to remove this layer?")) {
-                document.getElementById(img.id.replace(/-preview$/, "")).remove();
+                document.getElementById(LayerManager.canvasId(img.id)).remove();
                 el.remove();
                 this._activeLayer = 0;
                 this.switchLayer();
@@ -93,7 +109,7 @@ export default class LayerManager {
         }
     }
 
-    resetAllLayers() {
+    resetAllPreviews() {
         try {
             this.previewImages.forEach(preview => {
                 preview.src = window.__defaultImage__;
@@ -112,6 +128,10 @@ export default class LayerManager {
 
     get previewImages() {
         return [...document.getElementsByClassName(this.previewClass)];
+    }
+
+    static canvasId(previewId) {
+        return previewId.replace(/-preview$/, "");
     }
 
     static get layerManagerContent() {

@@ -1,7 +1,7 @@
 /**
  *  VE-paintJS
  *  Copyright (c) Simon Raichl 2018 - 2019
- *  MIT Licence
+ *  MIT License
  */
 
 import getAllLayers from "../UI/canvas.js";
@@ -23,7 +23,7 @@ export default function fileOptions(drawInstance) {
         getAllLayers().forEach(canvas => {
             canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
         });
-        drawInstance.layers.resetAllLayers();
+        drawInstance.layers.resetAllPreviews();
     });
 
     elems.saveFile.addEventListener("click", () => saveImage(elems.saveFileLink));

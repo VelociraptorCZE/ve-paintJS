@@ -1,7 +1,7 @@
 /**
  *  VE-paintJS
  *  Copyright (c) Simon Raichl 2018 - 2019
- *  MIT Licence
+ *  MIT License
  */
 
 import menuItems from "./menuItems.js";
@@ -13,9 +13,9 @@ export default function initMenu() {
         <div class="main-menu__item" tabindex="0">
         <span>${label}</span>
             <div class="main-menu__item--dropdown">
-              ${dropdownItems.map(({ content, id = "" }) => {
-                  return `<div class="main-menu__item--dropdown--item" id="${id}" data-group="${group}">${content}</div>`
-              }).join("")}
+              ${dropdownItems.map(({ content, id = "" }) =>
+                `<div class="main-menu__item--dropdown--item" id="${id}" data-group="${group}">${content}</div>`
+                ).join("")}
             </div>
         </div>
         `;

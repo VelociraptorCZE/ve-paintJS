@@ -1,24 +1,33 @@
 /**
  *  VE-paintJS
  *  Copyright (c) Simon Raichl 2018 - 2019
- *  MIT Licence
+ *  MIT License
  */
 
 import Brush from "./Brush.js";
 import Layers from "./Layers.js";
 import Exceptions from "../Service/Exceptions.js";
+import { getMenu } from "../UI/menu.js";
+import TextMode from "./TextMode.js";
 
 export default class Draw {
     constructor() {
         this.brush = new Brush();
+        this.text = new TextMode(this);
         this.layers = new Layers(this);
-        this.mode = "_freeMode";
+        this.font = "300 20px sans-serif";
+        this._mode = "_freeMode";
         this.composition = "source-over";
         this.coords = {};
     }
 
-    draw({ offsetX, offsetY }, preview) {
-        let layer;
+    set mode(name) {
+        this._mode = name;
+        document.querySelector(`[data-name=${name}]`).checked = true;
+    }
+
+    draw({ offsetX, offsetY, touches = [{}] }, preview) {
+        let layer, { clientX, clientY } = touches[0];
         if (preview) {
             layer = this.layers.previewLayer;
             layer.clearRect(0, 0, layer.canvas.width, layer.canvas.height);
@@ -28,13 +37,13 @@ export default class Draw {
         }
         this._prepareLayer(layer);
 
-        try {
-            this[this.mode](offsetX, offsetY, preview, layer);
+        if (this[this._mode]) {
+            this[this._mode](offsetX || clientX, offsetY || (clientY - getMenu().clientHeight), preview, layer);
         }
-        catch (_) {
+        else {
             if (!this._thrown) {
                 this._thrown = true;
-                throw Exceptions.notImplemented(this.mode, "Draw");
+                throw Exceptions.notImplemented(this._mode, "Draw");
             }
         }
     }
@@ -56,6 +65,11 @@ export default class Draw {
             this._setCoords(x, y);
             activeLayer.closePath();
         }
+    }
+
+    _textMode(x, y, preview, activeLayer) {
+        activeLayer.fillText(this.text.currentText, x, y);
+        activeLayer.font = this.font;
     }
 
     _prepareLayer(activeLayer, { color, opacity, blur } = this.brush) {

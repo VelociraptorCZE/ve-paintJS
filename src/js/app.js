@@ -1,7 +1,7 @@
 /**
  *  VE-paintJS
  *  Copyright (c) Simon Raichl 2018 - 2019
- *  MIT Licence
+ *  MIT License
  */
 
 import initDropdown from "./UI/dropdown.js";
@@ -24,4 +24,5 @@ draw.defaultFallback();
 fileOptions(draw); // Inits "File" section in the menu
 editOptions(); // Inits "Edit" section in the menu
 menuInteraction(draw.brush); // Enables interaction with inputs in "Brush" section
-menuInteraction(draw, "composition"); // Enables interaction with radio buttons in "Canvas operations" section
+menuInteraction(draw, "composition"); // Enables interaction with radio buttons in the section "Canvas operations"
+menuInteraction(draw, "modes"); // Enables interaction with radio buttons in the section "Modes"

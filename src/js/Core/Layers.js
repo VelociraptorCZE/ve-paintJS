@@ -1,7 +1,7 @@
 /**
  *  VE-paintJS
  *  Copyright (c) Simon Raichl 2018 - 2019
- *  MIT Licence
+ *  MIT License
  */
 
 import LayerManager from "./LayerManager.js";
@@ -20,12 +20,12 @@ export default class Layers extends LayerManager {
     }
 
     _initLayerListeners({ previewLayer, drawInstance } = this) {
-        const draw = [
+        const drawEvents = [
             {
                 target: previewLayer.canvas,
                 listener: "mousedown",
                 active: true,
-                callback: ({ activeLayer } = this) => {
+                callback: (e, { activeLayer } = this) => {
                     const img = new Image();
                     img.src = activeLayer.canvas.toDataURL();
                     window.__backup__ = { img: img, layer: activeLayer };
@@ -36,25 +36,35 @@ export default class Layers extends LayerManager {
                 listener: "mouseup",
                 active: false,
                 callback: () => {
-                    if (drawInstance.mode === "_freeMode") {
+                    if (drawInstance._mode === "_freeMode") {
                         drawInstance.coords = {};
                     }
                     this.renderPreviewImage();
                 }
             },
+            {
+                target: previewLayer.canvas,
+                listener: "mouseup",
+                active: false,
+                callback: e => {
+                    drawInstance.draw(e);
+                }
+            }
         ];
 
-        draw.forEach(({ target, listener, active, callback }) =>
-            target.addEventListener(listener, () => {
+        drawEvents.forEach(({ target, listener, active, callback }) =>
+            target.addEventListener(listener, e => {
             this.isActive = active;
-            callback && callback();
+            callback && callback(e);
         }));
 
-        previewLayer.canvas.addEventListener("mousemove", e => {
-            if (this.isActive) {
-                drawInstance.draw(e);
-            }
-            drawInstance.draw(e, true);
+        ["mousemove", "touchmove"].forEach(ev => {
+            previewLayer.canvas.addEventListener(ev, e => {
+                if (this.isActive || ev === "touchmove") {
+                    drawInstance.draw(e);
+                }
+                drawInstance.draw(e, true);
+            }, { passive: true, capture: true });
         });
     }
 

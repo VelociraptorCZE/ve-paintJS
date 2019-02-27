@@ -1,7 +1,7 @@
 /**
  *  VE-paintJS
  *  Copyright (c) Simon Raichl 2018 - 2019
- *  MIT Licence
+ *  MIT License
  */
 
 export default [
@@ -33,6 +33,22 @@ export default [
         ]
     },
     {
+        label: "Text",
+        group: "text",
+        dropdownItems: [
+            { content: `New text`, id: "menu-new-text" },
+            { content: `Set font`, id: "menu-set-font" },
+        ]
+    },
+    {
+        label: "Drawing modes",
+        group: "modes",
+        dropdownItems: [
+            { content: `Default ${generateInput("radio", "mode", { other: "checked", data_name: "_freeMode"})}` },
+            { content: `Text mode ${generateInput("radio", "mode", { data_name: "_textMode"})}` },
+        ]
+    },
+    {
         label: "Composite operations",
         group: "composition",
         dropdownItems: [
@@ -51,6 +67,7 @@ export default [
         dropdownItems: [
             { content: `➕ Create new layer`, id: "menu-layer-create" },
             { content: `Show/hide layer manager`, id: "menu-layer-manager" },
+            { content: `Set layer size`, id: "menu-layer-size" },
         ]
     }
 ];
