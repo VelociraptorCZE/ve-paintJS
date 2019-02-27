@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   Created with Inkscape (http://www.inkscape.org/)
+
+   VE-paintJS
+   Copyright (c) Simon Raichl 2018 - 2019
+   MIT License
+ -->
+<svg width="48" height="48" version="1.1" viewBox="0 0 12.7 12.7" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:osb="http://www.openswatchbook.org/uri/2009/osb" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+ <metadata>
+  <rdf:RDF>
+   <cc:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title/>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <g transform="translate(0 -284.3)" stroke-width="0">
+  <rect x="6.2282e-7" y="284.3" width="12.7" height="12.7" fill="#fff" fill-opacity=".39196" style="paint-order:markers stroke fill"/>
+  <rect x="2.3842e-7" y="290.65" width="6.35" height="6.35" fill="#e6e6e6" fill-opacity=".9799" style="paint-order:markers stroke fill"/>
+  <rect x="6.35" y="284.3" width="6.35" height="6.35" fill="#e6e6e6" style="paint-order:markers stroke fill"/>
+ </g>
+</svg>
