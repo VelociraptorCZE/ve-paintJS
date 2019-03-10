@@ -53,25 +53,8 @@ export default function fileOptions(drawInstance) {
         });
     });
 
-    elems.loadFileInput.addEventListener("change", ({ target }) => {
-        const fileReader = new FileReader();
-        fileReader.onload = () => {
-            const img = new Image();
-            img.onload = () => {
-                if (!fitImage) {
-                    setLayerResolution(img.naturalWidth, img.naturalHeight);
-                }
-                drawInstance.activeLayer.drawImage(img, 0, 0);
-                target.value = "";
-            };
-            img.src = fileReader.result.toString();
-        };
-
-        try {
-            fileReader.readAsDataURL(target.files[0]);
-        }
-        catch (_) {}
-    });
+    elems.loadFileInput.addEventListener("change", ({ target }) => loadImageHandler(target, fitImage, drawInstance));
+    window.addEventListener("paste", ({ clipboardData }) => loadImageHandler(clipboardData, true, drawInstance));
 }
 
 function saveImage(saveFileLink) {
@@ -82,6 +65,31 @@ function saveImage(saveFileLink) {
 
 function loadImage(loadFileInput) {
     loadFileInput.click();
+}
+
+function loadImageHandler(target, fitImage, drawInstance) {
+    const fileReader = new FileReader();
+    fileReader.onload = () => {
+        const img = new Image();
+        img.onload = () => {
+            if (!fitImage) {
+                setLayerResolution(img.naturalWidth, img.naturalHeight);
+            }
+            drawInstance.activeLayer.drawImage(img, 0, 0);
+            target.value = "";
+        };
+        img.src = fileReader.result.toString();
+    };
+
+    try {
+        if (target.items) {
+            fileReader.readAsDataURL(target.items[0].getAsFile());
+        }
+        else {
+            fileReader.readAsDataURL(target.files[0]);
+        }
+    }
+    catch (_) {}
 }
 
 function getImage() {

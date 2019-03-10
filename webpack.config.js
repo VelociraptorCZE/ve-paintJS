@@ -1,5 +1,5 @@
 require("webpack");
-const path = require('path');
+const path = require("path");
 
 module.exports = {
     entry: [
@@ -10,22 +10,22 @@ module.exports = {
         filename: "app.js"
     },
     module: {
-        rules: [
-            {
+        rules: [{
                 test: /\.js?$/,
                 exclude: /node_modules/,
-                loader: 'babel-loader',
+                loader: "babel-loader",
                 query: {
                     cacheDirectory: true,
                     presets: [
-                        ['es2015'],
-                        ['env', {
+                        ["es2015"],
+                        ["env", {
                             targets: {
-                                browsers: ['last 2 versions', 'safari >= 7'],
+                                browsers: ["last 2 versions", "safari >= 7"],
                             },
                         }],
                     ],
                 },
             }
-        ]}
+        ]
+    }
 };

@@ -43,15 +43,18 @@ export default class LayerManager {
     }
 
     _setLayerResolution() {
-        const { width, height } = this.activeLayer.canvas;
-        const res = prompt("New layer resolution in px: (w, h)", `${width}, ${height}`)
-            .replace(/\s+/, "")
-            .split(",")
-            .map(res => Number(res));
+        try {
+            const { width, height } = this.activeLayer.canvas;
+            const res = prompt("New layer resolution in px: (w, h)", `${width}, ${height}`)
+                .replace(/\s+/, "")
+                .split(",")
+                .map(res => Number(res));
 
-        setLayerResolution(...res);
-        this.drawInstance.defaultFallback();
-        this.resetAllPreviews();
+            setLayerResolution(...res);
+            this.drawInstance.defaultFallback();
+            this.resetAllPreviews();
+        }
+        catch (_) {}
     }
 
     switchLayer(target = this.defaultPreview, { previewClass } = this) {
